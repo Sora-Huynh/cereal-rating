@@ -20,3 +20,11 @@ Rplots.pdf
 Thumbs.db
 .vscode/
 .idea/
+
+# LaTeX build
+report/latex/*.aux
+report/latex/*.log
+report/latex/*.toc
+report/latex/*.lof
+report/latex/*.lot
+report/latex/*.out

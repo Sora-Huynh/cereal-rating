@@ -1,7 +1,7 @@
 # =====================================================================
 # Bước 2 – Mục 5.1 và Bảng 7: Bảng thống kê mô tả
 # Vào : data/processed/cereal_cleaned.rds   (bước 1)
-# Ra  : results/tables/bang_4 ... bang_7b (.csv)
+# Ra  : results/tables/bang_4 ... bang_9 (.csv)
 # Chạy từ thư mục gốc: Rscript analysis/02_descriptive_stats.R
 # =====================================================================
 
@@ -46,3 +46,34 @@ cat("\nBảng 7b: rating theo vị trí kệ\n")
 print(as.data.frame(bang_7b))
 save_table(bang_7a, "bang_7a_rating_theo_mfr.csv")
 save_table(bang_7b, "bang_7b_rating_theo_shelf.csv")
+
+# --- 5.2.3. Lượng đường trung bình theo kệ (căn cứ cho nhận xét về kệ 2) ---
+bang_8 <- cereal_final %>%
+  group_by(shelf) %>%
+  summarise(n = n(), sugars_Mean = round(mean(sugars), 2),
+            sugars_Median = round(median(sugars), 2),
+            fiber_Mean = round(mean(fiber), 2), .groups = "drop")
+cat("
+Bảng 8: sugars và fiber (trên 1 oz) theo vị trí kệ
+")
+print(as.data.frame(bang_8))
+save_table(bang_8, "bang_8_duong_theo_shelf.csv")
+
+# --- 5.2.4. Pearson, Spearman và Pearson khi bỏ 3 sản phẩm cám ---
+others <- setdiff(vars_11, "rating")
+no_bran <- cereal_final[!(rownames(cereal_final) %in% bran_products), ]
+bang_9 <- data.frame(
+  Bien = others,
+  Pearson = sapply(others, function(v) cor(cereal_final$rating, cereal_final[[v]])),
+  Spearman = sapply(others, function(v) cor(cereal_final$rating, cereal_final[[v]],
+                                            method = "spearman")),
+  Pearson_bo_cam = sapply(others, function(v) cor(no_bran$rating, no_bran[[v]])),
+  row.names = NULL
+)
+bang_9[-1] <- round(bang_9[-1], 3)
+bang_9 <- bang_9[order(bang_9$Pearson), ]
+cat("
+Bảng 9: Tương quan của rating với từng biến (N = 76; bỏ cám: N =", nrow(no_bran), ")
+")
+print(bang_9, row.names = FALSE)
+save_table(bang_9, "bang_9_tuong_quan_pearson_spearman.csv")

@@ -54,7 +54,7 @@ nutri_cols <- c("calories", "protein", "fat", "sodium",
 mfr_labels <- c("G" = "General Mills", "K" = "Kelloggs", "N" = "Nabisco",
                 "P" = "Post", "Q" = "Quaker Oats", "R" = "Ralston Purina")
 
-shelf_labels <- c("Ke 1 (Thap)", "Ke 2 (Vua)", "Ke 3 (Cao)")
+shelf_labels <- c("Kệ 1 (Thấp)", "Kệ 2 (Vừa)", "Kệ 3 (Cao)")
 
 # ---- Thống kê mô tả (Phần 5) ---------------------------------------------
 # 11 biến định lượng: thống kê mô tả, ngoại lai, tương quan
@@ -63,6 +63,9 @@ vars_11 <- c("rating", "calories", "protein", "fat", "sodium",
 
 # 10 biến liên tục để vẽ histogram (bỏ vitamins vì chỉ có 3 giá trị)
 vars_10 <- setdiff(vars_11, "vitamins")
+
+# 3 sản phẩm cám chi phối hệ số Pearson (dùng ở bảng so sánh Pearson / Spearman)
+bran_products <- c("100% Bran", "All-Bran", "All-Bran with Extra Fiber")
 
 tukey_k   <- 1.5  # hệ số hàng rào Tukey: [Q1 - k*IQR, Q3 + k*IQR]
 skew_type <- 2    # công thức skewness có hiệu chỉnh mẫu (giống SPSS/SAS)

@@ -87,7 +87,7 @@ Toàn bộ mất khoảng 20 giây. Có thể chạy riêng từng bước:
 |---|---|---|---|---|
 | 0 | `Rscript install_packages.R` | Cài các thư viện còn thiếu | – | – |
 | 1 | `Rscript analysis/01_preprocess.R` | Tiền xử lý số liệu | Phần 4 | `data/processed/cereal_cleaned.csv`, `.rds` |
-| 2 | `Rscript analysis/02_descriptive_stats.R` | Bảng 4 – 7 | Mục 5.1, Bảng 7 | `results/tables/bang_*.csv` |
+| 2 | `Rscript analysis/02_descriptive_stats.R` | Bảng 4 – 7; đường theo kệ; Pearson / Spearman | Mục 5.1, Bảng 7 – 9 | `results/tables/bang_*.csv` |
 | 3 | `Rscript analysis/03_descriptive_plots.R` | Hình 1 – 4, ma trận tương quan | Mục 5.2 | `results/figures/Hinh_*.png` |
 
 Bước 2 và 3 đọc dữ liệu sạch do bước 1 lưu, nên phải chạy bước 1 trước; bước 2 và 3 không phụ thuộc
@@ -156,9 +156,22 @@ Các chênh lệch trên mới là thống kê mô tả, chưa qua kiểm địn
 
 ## Tái lập
 
-Quy trình không có bước ngẫu nhiên, nên chạy lại luôn cho đúng cùng số liệu. Trên máy đã chạy thử, dữ
-liệu sạch, 6 bảng và 4 hình của cấu trúc mới giống hệt từng byte với kết quả của script gốc
-`archive/Báo cáo tới 5.r`. Hình PNG có thể khác đôi chút về font giữa các máy.
+Quy trình không có bước ngẫu nhiên, nên chạy lại luôn cho đúng cùng số liệu. Các số liệu khớp với
+script gốc `archive/Báo cáo tới 5.r`; khác biệt duy nhất là nhãn kệ nay có dấu ("Kệ 1 (Thấp)") và hình
+không còn in tiêu đề "Hình x" bên trong ảnh (chú thích nằm trong báo cáo LaTeX). Hình PNG có thể khác
+đôi chút về font giữa các máy.
+
+## Báo cáo LaTeX
+
+Mã nguồn báo cáo (tới Phần 5) ở `report/latex/main.tex`, đã sửa theo `doc/NHAN_XET_BAO_CAO.md`. Hình
+được lấy trực tiếp từ `results/figures/`, nên chạy `run_all.R` trước. Biên dịch bằng XeLaTeX (font
+Times New Roman), chạy hai lần để có mục lục:
+
+```powershell
+cd report/latex; xelatex main.tex; xelatex main.tex
+```
+
+Muốn có logo trên bìa thì đặt file `logo_bk.png` vào `report/latex/`.
 
 ## Cấu trúc thư mục
 
@@ -189,7 +202,8 @@ BTL/
 │   ├── tables/                  #   Bảng 4 – 7, ma trận tương quan (.csv)
 │   └── figures/                 #   Hình 1 – 4 (.png, 300 dpi)
 ├── report/
-│   └── L16_NHÓM XVIII.pdf       # báo cáo hiện tại (tới Phần 5)
+│   ├── L16_NHÓM XVIII.pdf       # bản báo cáo cũ (tới Phần 5)
+│   └── latex/main.tex           # báo cáo viết lại bằng LaTeX → main.pdf
 ├── doc/
 │   └── NHAN_XET_BAO_CAO.md      # các lỗi tìm thấy trong báo cáo, cần sửa
 └── archive/

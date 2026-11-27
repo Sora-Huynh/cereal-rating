@@ -1,0 +1,1351 @@
+% =====================================================================
+% Báo cáo BTL MT2013 – Nhóm L16 – XVIII (bản tới Phần 5)
+% Biên dịch bằng XeLaTeX, từ thư mục report/latex:
+%     xelatex main.tex   (chạy 2 lần để có mục lục)
+% Hình được lấy trực tiếp từ results/figures/ (chạy run_all.R trước).
+% =====================================================================
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[left=2.5cm,right=2cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{amsmath}
+\usepackage{newtxmath}        % công thức toán kiểu Times
+\usepackage[no-math]{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Arial}
+\usepackage{polyglossia}
+\setdefaultlanguage{vietnamese}
+\newcommand{\coverfont}{}     % bìa dùng chung Times New Roman
+
+\usepackage{icomma}           % dấu phẩy thập phân trong chế độ toán
+\usepackage{graphicx}
+\usepackage{array,booktabs,multirow,tabularx,longtable,makecell}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage[hidelinks]{hyperref}
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\graphicspath{{../../results/figures/}{./}}
+
+\captionsetup{labelsep=colon}
+\captionsetup[table]{position=above}
+\setlength{\parskip}{0.2em}
+\renewcommand{\arraystretch}{1.25}
+\setlist{itemsep=0.15em}
+
+\addto\captionsvietnamese{%
+  \renewcommand{\contentsname}{Mục lục}%
+  \renewcommand{\listtablename}{Danh sách bảng}%
+  \renewcommand{\listfigurename}{Danh sách hình vẽ}%
+  \renewcommand{\tablename}{Bảng}%
+  \renewcommand{\figurename}{Hình}%
+  \renewcommand{\refname}{TÀI LIỆU THAM KHẢO}%
+}
+
+\lstset{
+  language=R,
+  basicstyle=\ttfamily\small,
+  numbers=left, numberstyle=\tiny, numbersep=6pt,
+  breaklines=true, columns=fullflexible, keepspaces=true,
+  frame=single, rulecolor=\color{gray!60},
+  commentstyle=\color{teal!70!black}\itshape,
+  keywordstyle=\color{blue!70!black},
+  stringstyle=\color{red!60!black},
+  extendedchars=true, showstringspaces=false,
+  aboveskip=0.8em, belowskip=0.8em
+}
+
+% Ký hiệu trung bình và trung vị dùng thống nhất trong bài
+\newcommand{\xbar}{\bar{x}}
+\newcommand{\xmed}{\tilde{x}}
+
+\begin{document}
+
+% =====================================================================
+% TRANG BÌA
+% =====================================================================
+\begin{titlepage}
+\begin{tikzpicture}[remember picture,overlay]
+  \draw[line width=1.6pt] ([xshift=1.6cm,yshift=-1.6cm]current page.north west)
+        rectangle ([xshift=-1.6cm,yshift=1.6cm]current page.south east);
+  \draw[line width=0.5pt] ([xshift=1.75cm,yshift=-1.75cm]current page.north west)
+        rectangle ([xshift=-1.75cm,yshift=1.75cm]current page.south east);
+\end{tikzpicture}%
+\par\vspace*{-\baselineskip}
+\coverfont
+\setlength{\parindent}{0pt}
+\centering
+{\large\bfseries ĐẠI HỌC QUỐC GIA THÀNH PHỐ HỒ CHÍ MINH\\[0.3em]
+TRƯỜNG ĐẠI HỌC BÁCH KHOA\\[0.3em]
+KHOA KHOA HỌC ỨNG DỤNG\par}
+\vspace{0.2em}
+----------\,$\diamond$\,----------\par
+\vspace{1.2cm}
+\IfFileExists{logo_bk.png}{\includegraphics[width=3.6cm]{logo_bk.png}}{\rule{0pt}{3.6cm}}\par
+\vspace{1.2cm}
+{\large\bfseries BÁO CÁO BÀI TẬP LỚN\\[0.3em]
+XÁC SUẤT THỐNG KÊ (MT2013)\par}
+\vspace{0.6cm}
+\rule{0.85\textwidth}{0.6pt}\par
+\vspace{0.4cm}
+{\large\bfseries PHÂN TÍCH MỐI LIÊN HỆ\\[0.2em]
+GIỮA THÀNH PHẦN DINH DƯỠNG, NHÀ SẢN XUẤT\\[0.2em]
+VÀ ĐIỂM ĐÁNH GIÁ CỦA NGŨ CỐC ĂN SÁNG (RATING)\par}
+\vspace{0.3cm}
+\rule{0.85\textwidth}{0.6pt}\par
+\vspace{0.6cm}
+\begin{tabular}{r l}
+\textbf{GVHD:} & TS. Hồ Tuấn Đức \\
+\textbf{Nhóm lớp:} & L16 -- Nhóm XVIII -- HK261
+\end{tabular}\par
+\vspace{0.5cm}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{|c|l|c|l|}
+\hline
+\textbf{STT} & \multicolumn{1}{c|}{\textbf{Họ và tên}} & \textbf{MSSV} & \multicolumn{1}{c|}{\textbf{Khoa}} \\
+\hline
+1 & Lê Chí Khánh Minh       & 2513062 & Quản lý Công nghiệp \\
+2 & Nguyễn Phan Thiên Quang & 2513079 & Quản lý Công nghiệp \\
+3 & Huỳnh Anh Thư           & 2511984 & Quản lý Công nghiệp \\
+4 & Đặng Huỳnh Anh Bảo      & 2410220 & Khoa học Ứng dụng \\
+5 & Lê Minh Khánh Duy       & 2512605 & Xây dựng \\
+\hline
+\end{tabular}\par
+\vfill
+{\itshape Thành phố Hồ Chí Minh, 2026\par}
+\vspace{1cm}
+\end{titlepage}
+
+% =====================================================================
+% PHẦN ĐẦU
+% =====================================================================
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+\section*{Bảng phân công nhiệm vụ và mức độ đóng góp}
+\addcontentsline{toc}{section}{Bảng phân công nhiệm vụ và mức độ đóng góp}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|L{4.6cm}|c|L{3.6cm}|c|}
+\hline
+STT & Họ và tên & MSSV & Nhiệm vụ & Mức độ đóng góp \\
+\hline
+1 & Lê Chí Khánh Minh       & 2513062 & Cơ sở lý thuyết; Tổng hợp & 100\% \\ \hline
+2 & Nguyễn Phan Thiên Quang & 2513079 & Cơ sở lý thuyết; Tổng hợp & 100\% \\ \hline
+3 & Huỳnh Anh Thư           & 2511984 & Tổng quan dữ liệu; Tổng hợp & 100\% \\ \hline
+4 & Đặng Huỳnh Anh Bảo      & 2410220 & Tiền xử lý số liệu; Thống kê mô tả & 100\% \\ \hline
+5 & Lê Minh Khánh Duy       & 2512605 & Mục tiêu của BTL; Thống kê mô tả & 100\% \\ \hline
+\end{tabular}
+\end{table}
+
+\newpage
+\section*{Lời cảm ơn}
+\addcontentsline{toc}{section}{Lời cảm ơn}
+
+Lời đầu tiên, nhóm chúng em xin gửi lời cảm ơn chân thành và sâu sắc nhất đến thầy
+Hồ Tuấn Đức -- giảng viên hướng dẫn môn Xác suất Thống kê. Trong suốt quá trình thực hiện
+bài tập lớn, thầy đã tận tình giảng dạy, định hướng đề tài cũng như dành nhiều thời gian góp
+ý, sửa chữa các thiếu sót. Những chỉ dẫn quý báu của thầy không chỉ giúp nhóm tháo gỡ các
+vướng mắc chuyên môn mà còn hoàn thiện bài báo cáo một cách chỉn chu nhất.
+
+Bên cạnh đó, nhóm cũng xin gửi lời cảm ơn đến quý Thầy Cô trường Đại học Bách khoa -- Đại học
+Quốc gia Thành phố Hồ Chí Minh, đặc biệt là các thầy cô thuộc Khoa Khoa học Ứng dụng đã trang
+bị cho chúng em nền tảng tri thức và kỹ năng cần thiết trong suốt quá trình học tập. Đây là
+cơ sở quan trọng giúp nhóm vận dụng lý thuyết vào việc phân tích, xử lý dữ liệu và hoàn thiện
+đề tài này.
+
+Cuối cùng, nhóm xin gửi lời cảm ơn đến các bạn sinh viên đã nhiệt tình chia sẻ tài liệu, trao
+đổi kinh nghiệm và hỗ trợ nhóm trong quá trình thu thập thông tin, kiểm tra nội dung. Đồng
+thời, sự nỗ lực, tinh thần trách nhiệm và sự phối hợp ăn ý của tất cả các thành viên trong
+nhóm đã giúp chúng em không chỉ nâng cao kiến thức chuyên môn mà còn hoàn thiện các kỹ năng
+mềm như làm việc nhóm, quản lý thời gian và giải quyết vấn đề.
+
+Dù đã dành nhiều thời gian và nỗ lực để hoàn thành bài tập lớn một cách tốt nhất, song báo
+cáo vẫn khó tránh khỏi những hạn chế và thiếu sót. Nhóm rất mong nhận được những ý kiến đóng
+góp quý báu từ thầy để đề tài ngày càng hoàn thiện hơn, đồng thời giúp chúng em tích lũy kinh
+nghiệm cho các môn học và đề tài nghiên cứu tiếp theo.
+
+Một lần nữa, chúng em xin chân thành cảm ơn!
+
+\begin{flushright}
+\textit{Nhóm sinh viên thực hiện đề tài}
+\end{flushright}
+
+\newpage
+\tableofcontents
+\newpage
+\addcontentsline{toc}{section}{Danh sách bảng}
+\listoftables
+\newpage
+\addcontentsline{toc}{section}{Danh sách hình vẽ}
+\listoffigures
+\newpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% =====================================================================
+\section{TỔNG QUAN DỮ LIỆU}
+% =====================================================================
+
+\subsection{Ngữ cảnh, Quy mô và Bản chất Dữ liệu}
+
+Tệp dữ liệu \texttt{cereal.csv} (khai thác từ nguồn \textit{80 Cereals} trên Kaggle
+\cite{kaggle}) cung cấp thông tin dinh dưỡng và điểm đánh giá (\texttt{rating}) của các sản
+phẩm ngũ cốc ăn sáng thương mại phổ biến tại thị trường Mỹ. Dữ liệu ghi nhận chi tiết về nhà
+sản xuất, loại ngũ cốc, các chỉ số dinh dưỡng trên nhãn tiêu dùng, vị trí kệ trưng bày và
+điểm đánh giá tổng hợp.
+
+Bộ dữ liệu gốc ở dạng bảng gồm 77 quan trắc (77 sản phẩm từ 7 nhà sản xuất: 74 loại ăn lạnh,
+3 loại ăn nóng) và 16 biến thuộc tính. Dữ liệu không chứa ô trống, tuy nhiên xuất hiện các
+giá trị mã hóa ẩn bằng số $-1$ đại diện cho dữ liệu khuyết tại 3 biến dinh dưỡng:
+\texttt{potass} (2 dòng), \texttt{carbo} (1 dòng) và \texttt{sugars} (1 dòng).
+
+\textbf{Tổng thể và giới hạn của mẫu:} Tổng thể mà nhóm hướng tới là các sản phẩm ngũ cốc ăn
+sáng đóng gói bán phổ biến tại Mỹ. Tuy nhiên, 77 sản phẩm trong bộ dữ liệu là một danh sách
+các nhãn hàng thông dụng, \emph{không} được chọn ngẫu nhiên từ tổng thể này. Trong khi đó, các
+khoảng tin cậy và kiểm định ở phần suy diễn đều giả định mẫu ngẫu nhiên. Vì vậy, các kết luận
+suy diễn trong bài chỉ nên được hiểu là áp dụng cho nhóm sản phẩm tương tự với mẫu, và đây là
+một giới hạn nhóm ghi nhận ngay từ đầu.
+
+\textbf{Bản chất dữ liệu quan sát:} Đây là tập dữ liệu thứ cấp mang tính chất quan sát, không
+phải dữ liệu thu thập qua thiết kế thực nghiệm ngẫu nhiên. Do đó, các phân tích trong nghiên
+cứu này chỉ dùng để mô tả và lượng hóa \emph{mối liên hệ} (correlation) giữa các đặc trưng
+dinh dưỡng, nhà sản xuất và điểm đánh giá, không suy rộng thành quan hệ nhân quả. Vì lý do
+này, tên đề tài dùng cụm từ ``mối liên hệ'' thay cho ``ảnh hưởng''.
+
+\subsection{Phân loại và Vai trò các biến trong nghiên cứu}
+
+Toàn bộ thông tin mô tả, phân loại kiểu biến và vai trò xử lý của 16 biến gốc được tổng hợp
+trong Bảng~\ref{tab:bien}.
+
+\begin{table}[H]
+\centering
+\caption{Từ điển và Vai trò của các biến trong bài tập lớn}
+\label{tab:bien}
+\small
+\begin{tabular}{L{2.3cm} L{1.3cm} L{1.9cm} L{2.2cm} L{5.6cm}}
+\toprule
+Tên biến & Đơn vị & Kiểu biến gốc & Vai trò phân tích & Phương án xử lý dữ liệu trong BTL \\
+\midrule
+rating & điểm & Định lượng liên tục & Biến phụ thuộc ($Y$) &
+  Giữ nguyên thang đo gốc (18,04 -- 93,70 điểm). \\
+\midrule
+calories, protein, fat, sodium, fiber, carbo, sugars, potass &
+  kcal, g, mg & Định lượng liên tục & Biến độc lập định lượng ($X$) &
+  Chuẩn hóa hàm lượng về đơn vị 1 oz ($X_{\text{norm}} = X/\text{weight}$) để so sánh
+  trên cùng quy mô khẩu phần. \\
+\midrule
+vitamins & \% & Định lượng rời rạc & Biến độc lập định lượng ($X$) &
+  Nhận 3 giá trị (0, 25, 100\%); giữ nguyên, không chia cho weight (xem mục~\ref{sec:canc}). \\
+\midrule
+mfr & -- & Định tính định danh & Biến phân nhóm &
+  So sánh giữa 6 hãng ($N = 76$). Lọc bỏ hãng A do $n_A = 1$. \\
+\midrule
+shelf & -- & Định tính thứ bậc & Biến phân nhóm &
+  So sánh giữa 3 mức vị trí kệ (1, 2, 3). \\
+\midrule
+weight, cups & oz, cup & Định lượng liên tục & Quy đổi quy mô &
+  weight dùng để chia chuẩn hóa dinh dưỡng về 1 oz, sau đó bỏ. \\
+\midrule
+name, type & -- & Định danh / Nhị phân & Bỏ / Không phân nhóm &
+  name chỉ định danh; type chỉ có 3/77 mẫu ăn nóng (3,9\%, quá lệch mẫu). \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Căn cứ Phương pháp luận Xử lý và Chuyển đổi Biến}
+\label{sec:canc}
+
+Dựa trên đặc điểm cấu trúc dữ liệu ở Bảng~\ref{tab:bien}, nhóm đề xuất 4 nguyên tắc xử lý
+phương pháp luận cho các bước tiếp theo:
+
+\begin{enumerate}
+  \item \textbf{Chuẩn hóa quy mô khẩu phần (1 oz):} Khối lượng một khẩu phần gốc
+  (\texttt{weight}) giữa các loại ngũ cốc biến thiên từ 0,5 oz đến 1,5 oz (chênh lệch gấp 3
+  lần). Việc chia cho \texttt{weight} giúp 8 chỉ số dinh dưỡng được đưa về hàm lượng trên 1 oz,
+  đảm bảo mọi sản phẩm được so sánh trên cùng một quy mô. Riêng \texttt{vitamins} là mức
+  \% nhu cầu khuyến nghị được ghi theo bậc cố định (0, 25, 100\%) trên nhãn, không phải một
+  hàm lượng đo liên tục, nên nhóm giữ nguyên thay vì chia cho \texttt{weight}.
+
+  \item \textbf{Kiểm soát đa cộng tuyến hoàn hảo:} Biến khám phá
+  \texttt{total\_carbs} (= \texttt{carbo} + \texttt{sugars}) chỉ phục vụ Thống kê mô tả;
+  không đưa đồng thời cả 3 biến (\texttt{carbo}, \texttt{sugars}, \texttt{total\_carbs}) vào
+  cùng một mô hình hồi quy vì ma trận $\mathbf{X}^\top\mathbf{X}$ sẽ suy biến.
+
+  \item \textbf{Lọc mẫu hãng A ($n_A = 1$) và xử lý biến type:} Nhà sản xuất A chỉ có duy
+  nhất 1 sản phẩm (Maypo). ANOVA vẫn tính được với nhóm một phần tử (nhóm này góp 0 bậc tự do
+  vào $SSW$), nhưng không thể kiểm tra giả định chuẩn và phương sai cho nhóm đó, cũng không
+  thể so sánh cặp. Phần tương quan và hồi quy về nguyên tắc có thể dùng đủ $N = 77$; tuy
+  nhiên nhóm chọn dùng \emph{một mẫu phân tích chung} $N = 76$ cho mọi phần để các kết quả mô
+  tả, so sánh nhóm và hồi quy so sánh được với nhau. Biến \texttt{type} chỉ có 3/77 mẫu ăn
+  nóng (3,9\%), quá mất cân bằng nên không dùng làm biến phân nhóm.
+
+  \item \textbf{Xử lý biến vitamins và đa cộng tuyến dinh dưỡng:} Biến \texttt{vitamins}
+  được giữ định dạng định lượng rời rạc (0, 25, 100\%) để đưa trực tiếp vào hồi quy. Ngoài
+  ra, do năng lượng (\texttt{calories}) được cấu thành từ protein, fat và carbo, nhóm sẽ đánh
+  giá chỉ số phóng đại phương sai (VIF) để chẩn đoán đa cộng tuyến trước khi chốt mô hình.
+\end{enumerate}
+
+\subsection{Lưu ý về bản chất của biến rating}
+\label{sec:rating}
+
+Trong quá trình kiểm tra dữ liệu, nhóm hồi quy \texttt{rating} theo 9 biến dinh dưỡng
+\emph{gốc} (tính theo khẩu phần, chưa chia \texttt{weight}) trên cả 77 quan trắc và thu
+được $R^2 = 1{,}000000$, phần dư lớn nhất chỉ khoảng $5{,}7\cdot10^{-7}$ (sai số làm tròn
+ở chữ số thập phân thứ 6 của rating):
+\begin{multline}
+\text{rating} = 54{,}93 - 0{,}223\,\text{calories} + 3{,}273\,\text{protein}
+  - 1{,}691\,\text{fat} - 0{,}0545\,\text{sodium} \\
+  + 3{,}444\,\text{fiber} + 1{,}093\,\text{carbo} - 0{,}725\,\text{sugars}
+  - 0{,}034\,\text{potass} - 0{,}051\,\text{vitamins}
+\end{multline}
+Công thức này còn được tính với chính các mã khuyết $-1$ như số thật. Như vậy
+\texttt{rating} \emph{không} phải là một điểm đánh giá độc lập, mà là một điểm tính sẵn từ
+các cột dinh dưỡng theo khẩu phần. Phát hiện này có ba hệ quả nhóm ghi nhận cho các phần sau:
+\begin{itemize}
+  \item Hồi quy trên dữ liệu gốc không có sai số ngẫu nhiên, nên các kiểm định $t$, $F$ và
+  phần chẩn đoán phần dư ở mục~\ref{sec:ols} sẽ không còn ý nghĩa trên dữ liệu đó.
+  \item \texttt{mfr} và \texttt{shelf} không có tác động riêng lên \texttt{rating}; mọi chênh
+  lệch rating giữa các hãng và các kệ phản ánh khác biệt về thành phần dinh dưỡng.
+  \item Vì rating tính theo khẩu phần, sau khi chuẩn hóa về 1 oz và điền khuyết, cùng mô hình
+  chỉ còn $R^2 = 0{,}979$; phần dư của mô hình trên dữ liệu 1 oz đến từ bước chuẩn hóa (13 sản
+  phẩm có weight $\neq 1$) và điền khuyết, không phải sai số đo.
+\end{itemize}
+Phần Thống kê mô tả (Phần~\ref{sec:mota}) không bị ảnh hưởng. Hướng xử lý cụ thể cho phần
+suy diễn sẽ được nhóm thống nhất với giảng viên trước khi thực hiện.
+
+% =====================================================================
+\section{MỤC TIÊU CỦA BÀI TẬP LỚN}
+% =====================================================================
+
+\subsection{Mục tiêu tổng quát}
+
+Nghiên cứu ứng dụng các phương pháp Thống kê Mô tả và Thống kê Suy diễn để khám phá mối liên
+hệ giữa các thành phần dinh dưỡng đã chuẩn hóa theo 1 oz với điểm đánh giá sản phẩm
+(\texttt{rating}), đồng thời kiểm định và so sánh sự khác biệt về điểm đánh giá và hàm lượng
+dinh dưỡng chuẩn hóa giữa các nhóm nhà sản xuất (\texttt{mfr}) và vị trí kệ trưng bày
+(\texttt{shelf}).
+
+\subsection{Các mục tiêu cụ thể, hoạt động thực hiện và phương pháp}
+
+\textbf{A. Thống kê Mô tả và Tiền xử lý Dữ liệu}
+\begin{itemize}
+  \item \textbf{Quy trình tiền xử lý dữ liệu:}
+  \begin{enumerate}
+    \item \textit{Lọc mẫu sơ bộ:} Loại bỏ quan trắc của nhà sản xuất A ($n_A = 1$) vì không
+    kiểm tra được giả định và không so sánh cặp được cho nhóm này, giữ lại mẫu phân tích chung
+    gồm $N = 76$ quan trắc.
+    \item \textit{Điền khuyết dữ liệu:} Nhận diện và xử lý các giá trị khuyết mã ẩn $-1$ tại
+    các biến \texttt{carbo}, \texttt{sugars}, \texttt{potass} bằng trung vị tính trên đúng mẫu
+    phân tích $N = 76$.
+    \item \textit{Chuẩn hóa quy mô khẩu phần:} Quy đổi 8 biến dinh dưỡng về đơn vị trên 1 oz
+    ($X_{\text{norm}} = X/\text{weight}$); sau đó loại bỏ \texttt{weight}, \texttt{cups},
+    \texttt{name}, \texttt{type} và tạo biến tổng \texttt{total\_carbs} phục vụ Thống kê mô tả.
+  \end{enumerate}
+  \item \textbf{Mô tả đặc tính dữ liệu:} Tính các đại lượng đo lường xu hướng trung tâm
+  (Trung bình, Trung vị) và độ biến động (Độ lệch chuẩn, IQR, hệ số bất đối xứng), kết hợp
+  trực quan hóa phân bố cho biến phụ thuộc \texttt{rating} và các biến dinh dưỡng.
+  \begin{itemize}
+    \item \textit{Phương pháp:} Thống kê mô tả, biểu đồ phân bố (Histogram + KDE), biểu đồ hộp
+    (Boxplot), ma trận tương quan Pearson và Spearman.
+  \end{itemize}
+\end{itemize}
+
+\textbf{B. Phân tích So sánh Nhóm (Thống kê Suy diễn)}
+\begin{itemize}
+  \item \textbf{So sánh theo Nhà sản xuất (mfr -- 6 nhóm):} Kiểm định sự khác biệt về điểm
+  \texttt{rating} giữa 6 nhà sản xuất.
+  \begin{itemize}
+    \item \textit{Phương pháp:} Kiểm định tính chuẩn (Shapiro-Wilk) trên từng nhóm và tính
+    đồng nhất phương sai (Levene, biến thể Brown-Forsythe). Nếu thỏa mãn giả định, áp dụng
+    One-way ANOVA và so sánh bội Tukey HSD; nếu vi phạm giả định chuẩn, dùng Kruskal-Wallis kèm
+    so sánh hậu nghiệm Dunn (hoặc Welch's ANOVA nếu phương sai không đồng nhất).
+  \end{itemize}
+  \item \textbf{So sánh theo Vị trí kệ trưng bày (shelf -- 3 nhóm):} Kiểm định sự khác biệt
+  về \texttt{rating} giữa 3 mức kệ (Kệ 1: thấp, Kệ 2: vừa, Kệ 3: cao).
+  \begin{itemize}
+    \item \textit{Phương pháp:} One-way ANOVA hoặc Kruskal-Wallis tương ứng với mức độ thỏa
+    mãn các giả định.
+  \end{itemize}
+  \item \textbf{Kiểm soát kiểm định nhiều lần:} Nếu mở rộng so sánh sang 8 chất dinh dưỡng
+  theo cả \texttt{mfr} lẫn \texttt{shelf} (khoảng 18 kiểm định), xác suất có ít nhất một kết
+  luận sai ở $\alpha = 0{,}05$ sẽ cộng dồn đáng kể. Nhóm sẽ hiệu chỉnh $p$-value bằng phương
+  pháp Holm (hoặc Bonferroni), hoặc giới hạn số biến đem kiểm định.
+  \item \textbf{Diễn giải:} Theo mục~\ref{sec:rating}, khác biệt rating giữa các nhóm (nếu
+  có) được diễn giải là khác biệt về thành phần dinh dưỡng giữa các hãng/kệ, không phải tác
+  động riêng của thương hiệu hay vị trí kệ.
+\end{itemize}
+
+\textbf{C. Phân tích Mối liên hệ và Mô hình hóa (Tương quan \& Hồi quy)}
+\begin{itemize}
+  \item \textbf{Phân tích tương quan \& Kiểm tra Đa cộng tuyến:} Đánh giá mức độ và chiều
+  hướng tương quan giữa từng thành phần dinh dưỡng với \texttt{rating}; kiểm tra hiện tượng
+  đa cộng tuyến giữa các biến dinh dưỡng.
+  \begin{itemize}
+    \item \textit{Phương pháp:} Hệ số tương quan Pearson và Spearman, kiểm định ý nghĩa hệ số
+    tương quan; chỉ số phóng đại phương sai (VIF).
+  \end{itemize}
+  \item \textbf{Mô hình Hồi quy Tuyến tính Bội:} Xây dựng mô hình hồi quy để lượng hóa trọng
+  số của từng thành phần dinh dưỡng trong \texttt{rating}.
+  \begin{itemize}
+    \item \textit{Phương pháp:} Bình phương bé nhất (OLS), $R^2$, $R^2_{\text{adj}}$, kiểm định
+    $t$, $F$ và phân tích phần dư. Phạm vi suy diễn trên hệ số sẽ được điều chỉnh theo
+    mục~\ref{sec:rating}.
+  \end{itemize}
+\end{itemize}
+
+% =====================================================================
+\section{CƠ SỞ LÝ THUYẾT}
+% =====================================================================
+
+\subsection{Thống kê mô tả}
+
+Thống kê mô tả cung cấp các công cụ toán học và đồ họa để tóm tắt các đặc tính cơ bản của tập
+dữ liệu mẫu trước khi thực hiện các phân tích suy diễn. Trong toàn bài, $\xbar$ ký hiệu trung
+bình mẫu và $\xmed$ ký hiệu trung vị mẫu.
+
+\subsubsection{Các đại lượng đo lường xu hướng trung tâm}
+
+\begin{itemize}
+  \item \textbf{Trung bình mẫu (Sample Mean, $\xbar$):} Đại diện cho trọng tâm của tập dữ liệu:
+  \begin{equation}
+    \xbar = \frac{1}{n}\sum_{i=1}^{n} x_i
+  \end{equation}
+  \textit{Phạm vi áp dụng:} Biến định lượng có phân phối tương đối đối xứng và ít bị ảnh hưởng
+  bởi giá trị ngoại lai.
+
+  \item \textbf{Trung vị mẫu (Sample Median, $\xmed$):} Giá trị nằm ở chính giữa chuỗi dữ liệu
+  đã sắp xếp tăng dần $x_{(1)} \le x_{(2)} \le \dots \le x_{(n)}$:
+  \begin{equation}
+    \xmed =
+    \begin{cases}
+      x_{\left(\frac{n+1}{2}\right)} & \text{khi } n \text{ lẻ}\\[0.4em]
+      \dfrac{1}{2}\left(x_{\left(\frac{n}{2}\right)} + x_{\left(\frac{n}{2}+1\right)}\right) & \text{khi } n \text{ chẵn}
+    \end{cases}
+  \end{equation}
+  \textit{Phạm vi áp dụng:} Thước đo vững (robust), thích hợp khi dữ liệu có phân phối lệch
+  hoặc chứa điểm dị biệt.
+
+  \item \textbf{Yếu vị (Mode, $M_0$):} Giá trị xuất hiện với tần số lớn nhất trong tập quan
+  trắc, áp dụng cho cả biến định lượng rời rạc và biến định tính.
+\end{itemize}
+
+\subsubsection{Các đại lượng đo lường độ phân tán và hình dạng phân phối}
+
+\begin{itemize}
+  \item \textbf{Phương sai mẫu hiệu chỉnh ($s^2$):}
+  \begin{equation}
+    s^2 = \frac{1}{n-1}\sum_{i=1}^{n}(x_i - \xbar)^2
+  \end{equation}
+  \item \textbf{Độ lệch chuẩn mẫu ($s$):} Căn bậc hai của phương sai mẫu, cùng đơn vị đo với
+  biến gốc:
+  \begin{equation}
+    s = \sqrt{s^2}
+  \end{equation}
+  \item \textbf{Khoảng biến thiên (Range, $R$):} $R = x_{\max} - x_{\min}$.
+  \item \textbf{Tứ phân vị và Khoảng tứ phân vị (IQR):} Tứ phân vị thứ nhất $Q_1$ tại vị trí
+  25\%, tứ phân vị thứ ba $Q_3$ tại vị trí 75\%. Nhóm tính phân vị mức $p$ theo phương pháp
+  nội suy tuyến tính (mặc định \texttt{type = 7} của R):
+  \begin{equation}
+    Q(p) = x_{(\lfloor h \rfloor)} + (h - \lfloor h \rfloor)\left(x_{(\lfloor h \rfloor + 1)} - x_{(\lfloor h \rfloor)}\right),
+    \qquad h = (n-1)p + 1
+  \end{equation}
+  \begin{equation}
+    IQR = Q_3 - Q_1
+  \end{equation}
+  $IQR$ thể hiện độ biến thiên của 50\% dữ liệu ở phần trung tâm, không bị ảnh hưởng bởi các
+  giá trị ngoại lai. Lưu ý: cách tính phân vị khác (ví dụ trong một số giáo trình) có thể cho
+  $Q_1$, $Q_3$ hơi khác, kéo theo hàng rào Tukey ở mục~\ref{sec:tukey} thay đổi.
+
+  \item \textbf{Hệ số bất đối xứng (Skewness, $G_1$):} Đo mức độ lệch của phân phối. Nhóm dùng
+  hệ số có hiệu chỉnh mẫu (\texttt{e1071::skewness(type = 2)}, giống SPSS/SAS):
+  \begin{equation}
+    g_1 = \frac{\frac{1}{n}\sum_{i=1}^{n}(x_i-\xbar)^3}{\left[\frac{1}{n}\sum_{i=1}^{n}(x_i-\xbar)^2\right]^{3/2}},
+    \qquad
+    G_1 = \frac{\sqrt{n(n-1)}}{n-2}\, g_1
+  \end{equation}
+  Quy ước phân loại dùng trong bài: $|G_1| < 0{,}5$: tương đối đối xứng;
+  $0{,}5 \le |G_1| \le 1$: lệch vừa; $|G_1| > 1$: lệch mạnh. $G_1 > 0$ là lệch phải, $G_1 < 0$
+  là lệch trái.
+\end{itemize}
+
+\subsubsection{Phương pháp phát hiện giá trị ngoại lai theo hàng rào Tukey}
+\label{sec:tukey}
+
+Một quan trắc $x_i$ được xác định là điểm dị biệt nếu nằm ngoài khoảng giá trị hợp lệ:
+\begin{equation}
+  \left[\,Q_1 - 1{,}5 \times IQR;\; Q_3 + 1{,}5 \times IQR\,\right]
+\end{equation}
+\begin{itemize}
+  \item Điểm ngoại lai dưới: $x_i < Q_1 - 1{,}5 \times IQR$.
+  \item Điểm ngoại lai trên: $x_i > Q_3 + 1{,}5 \times IQR$.
+\end{itemize}
+
+\subsubsection{Thống kê mô tả cho biến định tính}
+
+Đối với các biến định tính (\texttt{mfr}, \texttt{shelf}), phân tích mô tả sử dụng bảng tần số:
+\begin{itemize}
+  \item \textbf{Tần số tuyệt đối ($n_k$):} Số lần xuất hiện của nhóm $k$.
+  \item \textbf{Tần số tương đối / Tỷ lệ phần trăm ($f_k$):}
+  \begin{equation}
+    f_k = \frac{n_k}{N}\times 100\%, \quad \text{với } N = \sum_{k=1}^{K} n_k
+    \text{ và } \sum_{k=1}^{K} f_k = 100\%
+  \end{equation}
+\end{itemize}
+
+\subsection{Lý thuyết Kiểm định giả thuyết thống kê \& Ước lượng}
+
+\subsubsection{Nguyên lý kiểm định giả thuyết}
+\begin{itemize}
+  \item \textbf{Giả thuyết không ($H_0$):} Phát biểu mặc định rằng không có sự khác biệt hoặc
+  không có liên hệ.
+  \item \textbf{Đối thuyết ($H_1$):} Phát biểu phản bác lại $H_0$, đại diện cho giả định
+  nghiên cứu.
+  \item \textbf{Sai lầm trong kiểm định:}
+  \begin{itemize}
+    \item Sai lầm loại I ($\alpha$): Bác bỏ $H_0$ khi $H_0$ đúng:
+    $\alpha = P(\text{Bác bỏ } H_0 \mid H_0 \text{ đúng})$.
+    \item Sai lầm loại II ($\beta$): Không bác bỏ $H_0$ khi $H_0$ sai:
+    $\beta = P(\text{Không bác bỏ } H_0 \mid H_0 \text{ sai})$.
+  \end{itemize}
+  \item \textbf{Tiêu chuẩn quyết định dựa vào $p$-value:}
+  \begin{itemize}
+    \item $p\text{-value} < \alpha$: Bác bỏ $H_0$, kết quả có ý nghĩa thống kê.
+    \item $p\text{-value} \ge \alpha$: Chưa đủ bằng chứng bác bỏ $H_0$.
+  \end{itemize}
+  \item \textbf{Kiểm định nhiều lần:} Khi thực hiện $m$ kiểm định cùng lúc, xác suất mắc ít
+  nhất một sai lầm loại I tăng lên (với $m$ kiểm định độc lập là $1-(1-\alpha)^m$). Phương pháp
+  Holm sắp các $p$-value tăng dần $p_{(1)} \le \dots \le p_{(m)}$ và bác bỏ lần lượt
+  $H_{(j)}$ khi $p_{(j)} \le \alpha/(m - j + 1)$, dừng ở giả thuyết đầu tiên không bác bỏ được.
+\end{itemize}
+
+\subsubsection{Ước lượng khoảng tin cậy}
+
+Bảng~\ref{tab:ktc} tổng hợp các bài toán tìm khoảng tin cậy đối xứng độ tin cậy
+$\gamma = 1-\alpha$ cho các tham số đặc trưng của tổng thể.
+
+\begin{table}[H]
+\centering
+\caption{Tóm tắt các bài toán tìm khoảng tin cậy đối xứng}
+\label{tab:ktc}
+\small
+\begin{tabular}{L{3cm} L{4.2cm} L{3.4cm} L{3.8cm}}
+\toprule
+Dạng tham số & Giả định mẫu / tổng thể & Độ chính xác ($\varepsilon$) & Khoảng tin cậy \\
+\midrule
+Tỷ lệ ($p$) & $nf \ge 5$ và $n(1-f) \ge 5$ &
+  $z_{\alpha/2}\sqrt{\dfrac{f(1-f)}{n}}$ & $f - \varepsilon < p < f + \varepsilon$ \\
+\midrule
+Trung bình ($\mu$) -- TH1 & $X \sim N(\mu,\sigma^2)$, $\sigma$ đã biết &
+  $z_{\alpha/2}\dfrac{\sigma}{\sqrt{n}}$ & $\xbar - \varepsilon < \mu < \xbar + \varepsilon$ \\
+\midrule
+Trung bình ($\mu$) -- TH2 & $X \sim N(\mu,\sigma^2)$, $\sigma$ chưa biết &
+  $t_{\alpha/2;\,n-1}\dfrac{s}{\sqrt{n}}$ & $\xbar - \varepsilon < \mu < \xbar + \varepsilon$ \\
+\midrule
+Trung bình ($\mu$) -- TH3 & Phân phối tùy ý, mẫu lớn $n \ge 30$ &
+  $z_{\alpha/2}\dfrac{s}{\sqrt{n}}$ & $\xbar - \varepsilon < \mu < \xbar + \varepsilon$ \\
+\midrule
+Phương sai ($\sigma^2$) & $X \sim N(\mu,\sigma^2)$, $\mu$ chưa biết & -- &
+  $\dfrac{(n-1)s^2}{\chi^2_{\alpha/2;\,n-1}} < \sigma^2 < \dfrac{(n-1)s^2}{\chi^2_{1-\alpha/2;\,n-1}}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Kiểm định phân phối chuẩn}
+
+Phân phối chuẩn là giả định cốt lõi của các kiểm định tham số (ANOVA, hồi quy OLS). Với
+ANOVA, giả định này áp dụng cho biến phụ thuộc \emph{trong từng nhóm} (tương đương với phần
+dư), không phải cho biến phụ thuộc gộp cả mẫu.
+\begin{itemize}
+  \item \textbf{Đồ thị xác suất chuẩn (Normal Q-Q Plot):} So sánh phân vị thực nghiệm của mẫu
+  với phân vị lý thuyết của phân phối chuẩn tắc $N(0,1)$. Nếu các điểm bám sát đường thẳng
+  45\textdegree, dữ liệu phù hợp với giả định phân phối chuẩn.
+  \item \textbf{Kiểm định Shapiro-Wilk:} Cặp giả thuyết:
+  \begin{equation}
+    \begin{cases}
+      H_0: \text{Dữ liệu tuân theo phân phối chuẩn}\\
+      H_1: \text{Dữ liệu không tuân theo phân phối chuẩn}
+    \end{cases}
+  \end{equation}
+  Thống kê kiểm định:
+  \begin{equation}
+    W = \frac{\left(\sum_{i=1}^{n} a_i x_{(i)}\right)^2}{\sum_{i=1}^{n}(x_i - \xbar)^2}
+  \end{equation}
+  trong đó $x_{(i)}$ là quan trắc thứ $i$ sau khi sắp xếp; $a_i$ là hệ số trọng số suy ra từ
+  kỳ vọng và ma trận hiệp phương sai của các thống kê thứ tự của mẫu chuẩn kích thước $n$.
+  Với $\alpha = 0{,}05$: nếu $p\text{-value} \ge 0{,}05$, chưa có cơ sở bác bỏ $H_0$; nếu
+  $p\text{-value} < 0{,}05$, bác bỏ $H_0$. Lưu ý: với nhóm nhỏ (ví dụ $n = 6$), kiểm định có
+  lực rất thấp, nên ``không bác bỏ $H_0$'' không chứng minh được dữ liệu chuẩn.
+\end{itemize}
+
+\subsection{Kiểm định so sánh trung bình ($t$-Test)}
+
+\subsubsection{Kiểm định trung bình một mẫu (One-Sample $t$-Test)}
+
+Áp dụng khi kiểm định giá trị trung bình tổng thể $\mu$ có bằng giá trị chuẩn $\mu_0$ khi chưa
+biết phương sai tổng thể $\sigma^2$:
+\begin{equation}
+  T = \frac{\xbar - \mu_0}{s/\sqrt{n}} \sim t(n-1)
+\end{equation}
+
+\subsubsection{Kiểm định so sánh hai trung bình độc lập}
+
+So sánh kỳ vọng hai tổng thể độc lập $\mu_1$ và $\mu_2$ từ hai mẫu kích thước $n_1$, $n_2$.
+\begin{itemize}
+  \item \textbf{Trường hợp phương sai bằng nhau ($\sigma_1^2 = \sigma_2^2$ -- Student's $t$-test):}
+  \begin{equation}
+    T = \frac{(\xbar_1 - \xbar_2) - D_0}{s_p\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}} \sim t(n_1+n_2-2),
+    \qquad s_p^2 = \frac{(n_1-1)s_1^2 + (n_2-1)s_2^2}{n_1+n_2-2}
+  \end{equation}
+  \item \textbf{Trường hợp phương sai khác nhau ($\sigma_1^2 \ne \sigma_2^2$ -- Welch's $t$-test):}
+  \begin{equation}
+    T = \frac{(\xbar_1 - \xbar_2) - D_0}{\sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}} \sim t(\nu)
+  \end{equation}
+  Bậc tự do hiệu chỉnh Welch--Satterthwaite:
+  \begin{equation}
+    \nu = \frac{\left(\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}\right)^2}
+               {\frac{(s_1^2/n_1)^2}{n_1-1} + \frac{(s_2^2/n_2)^2}{n_2-1}}
+  \end{equation}
+\end{itemize}
+
+\subsection{Phân tích phương sai một yếu tố (One-way ANOVA) \& Kiểm định phi tham số}
+
+Phân tích phương sai một yếu tố dùng để kiểm định sự bằng nhau về giá trị trung bình của $k$
+tổng thể độc lập ($k \ge 3$).
+
+\subsubsection{Mô hình toán học}
+
+Giả sử có $k$ nhóm độc lập, nhóm $i$ có $n_i$ quan trắc. Giá trị quan sát thứ $j$ thuộc nhóm
+$i$ được mô hình hóa:
+\begin{equation}
+  Y_{ij} = \mu + \tau_i + \varepsilon_{ij} = \mu_i + \varepsilon_{ij}
+  \qquad (i = 1,\dots,k;\; j = 1,\dots,n_i)
+\end{equation}
+trong đó $\mu$ là trung bình chung; $\mu_i$ là trung bình của nhóm $i$; $\tau_i = \mu_i - \mu$
+là hiệu ứng của nhóm $i$; $\varepsilon_{ij}$ là sai số ngẫu nhiên.
+
+\subsubsection{Các giả định bắt buộc của ANOVA}
+\begin{enumerate}
+  \item \textbf{Tính độc lập:} Các quan trắc trong từng nhóm và giữa các nhóm độc lập với nhau.
+  \item \textbf{Tính phân phối chuẩn:} Biến phụ thuộc trong mỗi nhóm tuân theo phân phối chuẩn:
+  $Y_{ij} \sim N(\mu_i, \sigma^2)$.
+  \item \textbf{Tính đồng nhất phương sai:} $\sigma_1^2 = \sigma_2^2 = \dots = \sigma_k^2 = \sigma^2$.
+\end{enumerate}
+
+\subsubsection{Kiểm định tính đồng nhất phương sai (Levene -- biến thể Brown-Forsythe)}
+
+Cặp giả thuyết: $H_0: \sigma_1^2 = \sigma_2^2 = \dots = \sigma_k^2$ đối
+$H_1: \exists\,(i,l)$ sao cho $\sigma_i^2 \ne \sigma_l^2$. Thống kê được tính trên độ lệch tuyệt
+đối so với \emph{trung vị} nhóm $Z_{ij} = |Y_{ij} - \tilde{Y}_i|$ (biến thể Brown-Forsythe, cũng
+là mặc định của \texttt{car::leveneTest}), nên ít bị ảnh hưởng bởi tính phi chuẩn của dữ liệu:
+\begin{equation}
+  W = \frac{N-k}{k-1}\cdot
+      \frac{\sum_{i=1}^{k} n_i(\bar{Z}_{i\cdot} - \bar{Z}_{\cdot\cdot})^2}
+           {\sum_{i=1}^{k}\sum_{j=1}^{n_i}(Z_{ij} - \bar{Z}_{i\cdot})^2}
+  \sim F(k-1,\, N-k)
+\end{equation}
+
+\subsubsection{Phân rã tổng các bình phương ($SST = SSB + SSW$) \& Bảng ANOVA}
+
+Tổng biến thiên toàn phần ($SST$) được phân rã thành biến thiên giữa các nhóm ($SSB$) và biến
+thiên nội bộ nhóm ($SSW$):
+\begin{equation}
+  SST = SSB + SSW
+\end{equation}
+\begin{itemize}
+  \item Tổng bình phương toàn phần:
+  \begin{equation}
+    SST = \sum_{i=1}^{k}\sum_{j=1}^{n_i}(Y_{ij} - \bar{Y}_{\cdot\cdot})^2, \quad df_T = N-1
+  \end{equation}
+  \item Tổng bình phương giữa các nhóm:
+  \begin{equation}
+    SSB = \sum_{i=1}^{k} n_i(\bar{Y}_{i\cdot} - \bar{Y}_{\cdot\cdot})^2, \quad df_B = k-1
+  \end{equation}
+  \item Tổng bình phương trong nội bộ nhóm:
+  \begin{equation}
+    SSW = \sum_{i=1}^{k}\sum_{j=1}^{n_i}(Y_{ij} - \bar{Y}_{i\cdot})^2, \quad df_W = N-k
+  \end{equation}
+\end{itemize}
+(Trong đó $N = \sum_{i=1}^{k} n_i$; $\bar{Y}_{i\cdot}$ là trung bình nhóm $i$;
+$\bar{Y}_{\cdot\cdot}$ là trung bình chung toàn bộ mẫu.)
+
+\begin{table}[H]
+\centering
+\caption{Bảng phân tích phương sai chuẩn (ANOVA)}
+\label{tab:anova}
+\begin{tabular}{l c c c c c}
+\toprule
+Nguồn biến thiên & SS & df & MS & Thống kê $F$ & $p$-value \\
+\midrule
+Giữa các nhóm & $SSB$ & $k-1$ & $MSB = \frac{SSB}{k-1}$ & $F = \frac{MSB}{MSW}$ & $P(F_{k-1,N-k} > F)$ \\
+Nội bộ nhóm   & $SSW$ & $N-k$ & $MSW = \frac{SSW}{N-k}$ & & \\
+Toàn phần     & $SST$ & $N-1$ & & & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Cặp giả thuyết kiểm định:
+\begin{equation}
+  \begin{cases}
+    H_0: \mu_1 = \mu_2 = \dots = \mu_k\\
+    H_1: \exists\,(i,l) \text{ sao cho } \mu_i \ne \mu_l
+  \end{cases}
+\end{equation}
+Quy tắc kết luận: Nếu $F > F_{\alpha;\,k-1,\,N-k}$ (hoặc $p\text{-value} < \alpha$), bác bỏ $H_0$
+và kết luận có ít nhất một cặp nhóm có trung bình khác biệt. Một nhóm chỉ có 1 quan trắc vẫn
+tính được $F$ (góp 0 bậc tự do vào $SSW$), nhưng không kiểm tra được giả định cho nhóm đó.
+
+\subsubsection{Phân tích so sánh bội hậu nghiệm (Tukey HSD)}
+
+Khi ANOVA bác bỏ $H_0$, kiểm định Tukey HSD được dùng để kiểm soát sai lầm loại I toàn họ phép
+thử (familywise error rate) khi so sánh từng cặp trung bình $(\mu_i, \mu_l)$. Khoảng tin cậy đồng
+thời cho hiệu $(\mu_i - \mu_l)$:
+\begin{equation}
+  (\bar{Y}_{i\cdot} - \bar{Y}_{l\cdot}) \pm q_{\alpha;\,k,\,N-k}
+  \sqrt{\frac{MSW}{2}\left(\frac{1}{n_i}+\frac{1}{n_l}\right)}
+\end{equation}
+Nếu khoảng tin cậy không chứa giá trị 0, sự khác biệt giữa hai nhóm có ý nghĩa thống kê.
+
+\subsubsection{Kiểm định phi tham số thay thế: Kruskal-Wallis Test}
+
+Áp dụng khi dữ liệu vi phạm giả định chuẩn. Xếp hạng toàn bộ $N$ quan sát (hạng trùng nhận hạng
+trung bình), gọi $R_i$ là tổng hạng của nhóm $i$:
+\begin{equation}
+  H = \frac{12}{N(N+1)}\sum_{i=1}^{k}\frac{R_i^2}{n_i} - 3(N+1)
+\end{equation}
+Khi có hạng trùng, thống kê được hiệu chỉnh (đây cũng là cách \texttt{kruskal.test} trong R tính):
+\begin{equation}
+  H_{c} = \frac{H}{1 - \dfrac{\sum_{g}(t_g^3 - t_g)}{N^3 - N}} \;\approx\; \chi^2(k-1)
+\end{equation}
+với $t_g$ là số quan sát trong nhóm hạng trùng thứ $g$. Khi $H_c$ có ý nghĩa thống kê, kiểm
+định hậu nghiệm Dunn (kèm hiệu chỉnh Holm hoặc Bonferroni) được dùng để so sánh từng cặp nhóm.
+
+\subsection{Phân tích tương quan}
+
+\subsubsection{Hệ số tương quan Pearson ($r$) \& Kiểm định ý nghĩa}
+
+Đo lường mức độ và chiều hướng tương quan tuyến tính giữa hai biến định lượng $X$ và $Y$:
+\begin{equation}
+  r = \frac{\sum_{i=1}^{n}(x_i - \xbar)(y_i - \bar{y})}
+           {\sqrt{\sum_{i=1}^{n}(x_i - \xbar)^2}\sqrt{\sum_{i=1}^{n}(y_i - \bar{y})^2}}
+\end{equation}
+Tính chất: $-1 \le r \le 1$. Quy ước: $|r| \ge 0{,}7$: tương quan mạnh;
+$0{,}4 \le |r| < 0{,}7$: tương quan trung bình; $|r| < 0{,}4$: tương quan yếu.
+Hệ số Pearson nhạy với giá trị ngoại lai: một vài điểm ở xa có thể làm $|r|$ tăng hoặc giảm
+đáng kể.
+
+Kiểm định ý nghĩa thống kê của hệ số tương quan ($H_0: \rho = 0$ đối $H_1: \rho \ne 0$):
+\begin{equation}
+  T = \frac{r\sqrt{n-2}}{\sqrt{1-r^2}} \sim t(n-2)
+\end{equation}
+
+\subsubsection{Hệ số tương quan hạng Spearman ($r_s$)}
+
+Đo lường mối quan hệ đơn điệu (không nhất thiết tuyến tính), không yêu cầu phân phối chuẩn và
+vững hơn trước ngoại lai. Về định nghĩa, $r_s$ là hệ số Pearson tính trên thứ hạng của hai
+biến (hạng trùng nhận hạng trung bình); R tính theo cách này. Khi \emph{không có hạng trùng},
+công thức trên rút gọn thành:
+\begin{equation}
+  r_s = 1 - \frac{6\sum_{i=1}^{n} d_i^2}{n(n^2-1)}
+\end{equation}
+với $d_i = \operatorname{rank}(x_i) - \operatorname{rank}(y_i)$. Dữ liệu của nhóm có nhiều giá
+trị trùng (calories, protein, vitamins\ldots), nên công thức rút gọn chỉ mang tính minh họa.
+
+\subsection{Mô hình Hồi quy tuyến tính bội (Multiple Linear Regression -- OLS)}
+\label{sec:ols}
+
+\subsubsection{Dạng tổng quát mô hình}
+\begin{itemize}
+  \item Dạng đại số:
+  \begin{equation}
+    Y_i = \beta_0 + \beta_1 X_{i1} + \beta_2 X_{i2} + \dots + \beta_p X_{ip} + \varepsilon_i
+    \qquad (i = 1,\dots,n)
+  \end{equation}
+  \item Dạng ma trận: $\mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}$, với
+  \begin{equation}
+    \mathbf{Y} = \begin{pmatrix} Y_1\\ Y_2\\ \vdots\\ Y_n \end{pmatrix},\;
+    \mathbf{X} = \begin{pmatrix}
+      1 & X_{11} & \cdots & X_{1p}\\
+      1 & X_{21} & \cdots & X_{2p}\\
+      \vdots & \vdots & \ddots & \vdots\\
+      1 & X_{n1} & \cdots & X_{np}
+    \end{pmatrix},\;
+    \boldsymbol{\beta} = \begin{pmatrix} \beta_0\\ \beta_1\\ \vdots\\ \beta_p \end{pmatrix},\;
+    \boldsymbol{\varepsilon} = \begin{pmatrix} \varepsilon_1\\ \varepsilon_2\\ \vdots\\ \varepsilon_n \end{pmatrix}
+  \end{equation}
+\end{itemize}
+
+\subsubsection{Phương pháp bình phương bé nhất (OLS)}
+
+Ước lượng $\hat{\boldsymbol{\beta}}$ được tìm bằng cách cực tiểu hóa tổng bình phương phần dư
+($SSE$):
+\begin{equation}
+  \hat{\boldsymbol{\beta}} = (\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\mathbf{Y}
+\end{equation}
+Giá trị dự báo: $\hat{\mathbf{Y}} = \mathbf{X}\hat{\boldsymbol{\beta}} = \mathbf{H}\mathbf{Y}$
+với $\mathbf{H} = \mathbf{X}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top$ là ma trận Hat.
+Vector phần dư: $\mathbf{e} = \mathbf{Y} - \hat{\mathbf{Y}} = (\mathbf{I} - \mathbf{H})\mathbf{Y}$.
+
+\subsubsection{Đánh giá mức độ phù hợp của mô hình}
+
+Phân rã biến thiên toàn phần:
+\begin{equation}
+  SST = SSR + SSE \iff
+  \sum_{i=1}^{n}(Y_i - \bar{Y})^2 = \sum_{i=1}^{n}(\hat{Y}_i - \bar{Y})^2 + \sum_{i=1}^{n}(Y_i - \hat{Y}_i)^2
+\end{equation}
+\begin{itemize}
+  \item Hệ số xác định:
+  \begin{equation}
+    R^2 = \frac{SSR}{SST} = 1 - \frac{SSE}{SST}
+  \end{equation}
+  \item Hệ số xác định hiệu chỉnh:
+  \begin{equation}
+    R^2_{\text{adj}} = 1 - \frac{SSE/(n-p-1)}{SST/(n-1)} = 1 - (1-R^2)\frac{n-1}{n-p-1}
+  \end{equation}
+\end{itemize}
+
+\subsubsection{Các kiểm định ý nghĩa trong mô hình hồi quy}
+\begin{itemize}
+  \item \textbf{Kiểm định độ phù hợp chung của mô hình (Kiểm định $F$):}
+  $H_0: \beta_1 = \beta_2 = \dots = \beta_p = 0$ đối $H_1: \exists\,\beta_j \ne 0$.
+  \begin{equation}
+    F = \frac{SSR/p}{SSE/(n-p-1)} \sim F(p,\, n-p-1)
+  \end{equation}
+  Nếu $p\text{-value} < \alpha$, mô hình có ý nghĩa giải thích tổng thể.
+  \item \textbf{Kiểm định ý nghĩa của từng hệ số hồi quy (Kiểm định $t$):}
+  $H_0: \beta_j = 0$ đối $H_1: \beta_j \ne 0$.
+  \begin{equation}
+    T_j = \frac{\hat{\beta}_j}{SE(\hat{\beta}_j)} \sim t(n-p-1)
+  \end{equation}
+  với $SE(\hat{\beta}_j) = \sqrt{\hat{\sigma}^2\,[(\mathbf{X}^\top\mathbf{X})^{-1}]_{jj}}$ và
+  $\hat{\sigma}^2 = \dfrac{SSE}{n-p-1}$.
+\end{itemize}
+
+\subsubsection{Kiểm định và chẩn đoán các giả định của sai số OLS}
+\begin{enumerate}
+  \item \textbf{Đa cộng tuyến (Multicollinearity):} Đánh giá qua hệ số phóng đại phương sai:
+  \begin{equation}
+    VIF_j = \frac{1}{1 - R_j^2}
+  \end{equation}
+  trong đó $R_j^2$ là hệ số xác định khi hồi quy biến độc lập $X_j$ theo toàn bộ các biến độc
+  lập còn lại. Ngưỡng $VIF < 5$ là an toàn; $VIF \ge 5$ cần chú ý và $VIF \ge 10$ cảnh báo đa
+  cộng tuyến nghiêm trọng cần khắc phục.
+  \item \textbf{Tính tuyến tính và kỳ vọng sai số bằng 0 ($E(\varepsilon) = 0$):} Kiểm tra qua đồ
+  thị phần dư theo giá trị dự báo (Residuals vs Fitted). Các điểm phải phân tán ngẫu nhiên xung
+  quanh đường $e = 0$.
+  \item \textbf{Phương sai sai số đồng nhất ($\operatorname{Var}(\varepsilon) = \sigma^2$):} Kiểm tra
+  qua biểu đồ Scale-Location và kiểm định Breusch-Pagan với $H_0$: phương sai sai số không đổi.
+  \item \textbf{Sai số tuân theo phân phối chuẩn ($\varepsilon \sim N(0,\sigma^2)$):} Kiểm tra qua
+  đồ thị Normal Q-Q của phần dư chuẩn hóa và kiểm định Shapiro-Wilk trên vector phần dư $\mathbf{e}$.
+  \item \textbf{Tính độc lập của sai số:} Kiểm định Durbin-Watson:
+  \begin{equation}
+    DW = \frac{\sum_{i=2}^{n}(e_i - e_{i-1})^2}{\sum_{i=1}^{n} e_i^2}
+  \end{equation}
+  $DW \approx 2$ cho thấy không có tự tương quan \emph{bậc 1} giữa các sai số liền kề; kiểm
+  định này không kiểm tra các dạng phụ thuộc khác. Với dữ liệu chéo như bộ dữ liệu này, thứ tự
+  dòng là thứ tự tên sản phẩm theo bảng chữ cái, nên kết quả DW gần như không mang ý nghĩa và
+  chỉ được báo cáo để tham khảo.
+  \item \textbf{Nhận diện điểm ảnh hưởng cực đoan:} Sử dụng khoảng cách Cook:
+  \begin{equation}
+    D_i = \frac{\sum_{j=1}^{n}(\hat{Y}_j - \hat{Y}_{j(i)})^2}{(p+1)\,\hat{\sigma}^2}
+  \end{equation}
+  Các quan trắc có $D_i > 0{,}5$ hoặc $D_i > 4/n$ được xem là điểm có ảnh hưởng bất thường cần
+  xem xét.
+\end{enumerate}
+
+% =====================================================================
+\section{TIỀN XỬ LÝ SỐ LIỆU}
+% =====================================================================
+
+Toàn bộ quy trình được viết bằng R, tổ chức thành các hàm trong \texttt{src/preprocess.R};
+script \texttt{analysis/01\_preprocess.R} gọi các hàm này theo đúng thứ tự mục 4.1 -- 4.5.
+Mọi đường dẫn tính từ thư mục gốc dự án, khai báo tập trung trong \texttt{src/config.R}, nên
+mã chạy được trên mọi máy. Các đoạn mã dưới đây được trích từ mã nguồn.
+
+\subsection{Đọc dữ liệu và Khảo sát dữ liệu khuyết}
+
+Tập dữ liệu \texttt{cereal.csv} gồm 77 quan sát và 16 biến. Dữ liệu không có ô rỗng
+\texttt{NA} nhưng xuất hiện mã ẩn $-1$ đại diện cho giá trị khuyết tại 3 biến định lượng:
+\texttt{potass} (2 dòng: 2,6\%, gồm Almond Delight và Cream of Wheat (Quick)), \texttt{carbo}
+(1 dòng: 1,3\%) và \texttt{sugars} (1 dòng: 1,3\%), hai giá trị sau cùng thuộc Quaker
+Oatmeal. Nhóm chuyển đổi các giá trị $-1$ này thành \texttt{NA} chuẩn trong R để chuẩn bị cho
+bước xử lý tiếp theo.
+
+\begin{lstlisting}
+# 4.1. Đọc dữ liệu gốc và chuyển mã ẩn -1 thành NA
+paths <- list(raw_data = "data/raw/cereal.csv")
+num_cols <- c("calories", "protein", "fat", "sodium", "fiber",
+              "carbo", "sugars", "potass", "weight", "cups", "rating")
+
+read_raw_cereal <- function(path = paths$raw_data) {
+  cereal <- read.csv(path, stringsAsFactors = FALSE)
+  cereal[num_cols] <- lapply(cereal[num_cols], function(x) {
+    ifelse(x == -1, NA, as.numeric(x))
+  })
+  cereal
+}
+\end{lstlisting}
+
+\subsection{Lọc mẫu và Bớt biến sơ bộ}
+
+Việc lọc mẫu được thực hiện \emph{trước} bước điền khuyết, để trung vị dùng điền khuyết được
+tính trên đúng mẫu phân tích $N = 76$:
+\begin{itemize}
+  \item \textbf{Lọc mẫu:} Loại bỏ 1 quan trắc thuộc nhà sản xuất A (American Home Food
+  Products, sản phẩm Maypo) vì $n_A = 1$ không cho phép kiểm tra giả định và so sánh cặp cho
+  nhóm này, giữ lại tập mẫu phân tích chung gồm $N = 76$ quan trắc.
+  \item \textbf{Bớt biến sơ bộ:} Loại bỏ biến \texttt{name} (chỉ có chức năng định danh) và
+  biến \texttt{type} (chỉ có 3/77 sản phẩm ăn nóng). Tên sản phẩm được giữ làm tên dòng để tra
+  cứu ngoại lai ở Phần~\ref{sec:mota}. Biến \texttt{weight} được giữ lại tạm thời để dùng cho
+  bước quy đổi khẩu phần.
+\end{itemize}
+
+\begin{lstlisting}
+# 4.2. Lọc bỏ hãng A (n = 1) trước khi điền khuyết; bỏ name, type.
+# Tên sản phẩm được giữ làm tên dòng để tra cứu ngoại lai ở Phần 5.
+filter_sample <- function(cereal) {
+  out <- subset(cereal, mfr != "A")
+  rownames(out) <- out$name
+  out[, !(names(out) %in% c("name", "type"))]
+}
+\end{lstlisting}
+
+\subsection{Điền khuyết dữ liệu}
+
+Trên tập dữ liệu $N = 76$, nhóm điền các giá trị khuyết bằng trung vị của từng biến tương ứng.
+Phương pháp điền trung vị là thước đo vững, ít làm méo phân bố khi tỷ lệ khuyết rất nhỏ
+($< 3\%$) và bảo toàn cỡ mẫu $N = 76$. Hạn chế của cách làm này là giá trị điền có thể không
+thực tế với sản phẩm cụ thể: Quaker Oatmeal là yến mạch nóng không đường nhưng được điền
+\texttt{sugars} = 7 g và \texttt{carbo} = 14 g. Do chỉ ảnh hưởng 3 dòng, nhóm chấp nhận hạn chế
+này cho phần mô tả và ghi nhận lại để xem xét ở phần suy diễn.
+
+\begin{lstlisting}
+# 4.3. Điền giá trị khuyết (NA) bằng trung vị tính trên mẫu N = 76
+impute_median <- function(cereal, cols = c("carbo", "sugars", "potass")) {
+  for (col in cols) {
+    med_val <- median(cereal[[col]], na.rm = TRUE)
+    cereal[[col]][is.na(cereal[[col]])] <- med_val
+  }
+  cereal
+}
+\end{lstlisting}
+
+\subsection{Chuẩn hóa quy mô khẩu phần và Tạo biến mới}
+
+Do khối lượng khẩu phần (\texttt{weight}) giữa các loại ngũ cốc không đồng nhất (từ 0,5 oz
+đến 1,5 oz), so sánh trực tiếp các thành phần dinh dưỡng nguyên bản sẽ gây sai lệch do quy mô
+khẩu phần khác nhau.
+\begin{itemize}
+  \item \textbf{Chuẩn hóa quy mô khẩu phần:} Quy đổi 8 biến dinh dưỡng về hàm lượng trên 1 oz
+  bằng cách chia giá trị gốc cho \texttt{weight}:
+  \begin{equation}
+    \text{Nutrient}_{\text{norm}} = \frac{\text{Nutrient}}{\text{weight}}
+  \end{equation}
+  \texttt{rating} và \texttt{vitamins} giữ nguyên. Lưu ý theo mục~\ref{sec:rating}:
+  \texttt{rating} được tính theo khẩu phần gốc, nên với 13 sản phẩm có weight $\neq 1$, giá
+  trị dinh dưỡng sau chuẩn hóa không còn khớp chính xác với cách rating được tính.
+  \item \textbf{Bớt biến hoàn tất quy đổi:} Sau khi quy đổi, loại bỏ \texttt{weight} và
+  \texttt{cups} khỏi tập dữ liệu phân tích.
+  \item \textbf{Tạo biến khám phá total\_carbs:} \texttt{total\_carbs} = \texttt{carbo} +
+  \texttt{sugars} (tổng lượng bột đường trên 1 oz), chỉ phục vụ Thống kê mô tả.
+\end{itemize}
+
+\begin{lstlisting}
+# 4.4. Chuẩn hóa 8 biến dinh dưỡng về khẩu phần 1 oz, tạo total_carbs,
+# rồi bỏ weight và cups
+nutri_cols <- c("calories", "protein", "fat", "sodium",
+                "fiber", "carbo", "sugars", "potass")
+
+normalize_per_oz <- function(cereal, cols = nutri_cols) {
+  for (col in cols) {
+    cereal[[col]] <- cereal[[col]] / cereal$weight
+  }
+  cereal$total_carbs <- cereal$carbo + cereal$sugars
+  cereal[, !(names(cereal) %in% c("weight", "cups"))]
+}
+\end{lstlisting}
+
+\subsection{Định dạng biến Factor và Kiểm tra cấu trúc dữ liệu}
+
+Nhóm chuyển các biến phân nhóm (\texttt{mfr}, \texttt{shelf}) từ dạng ký tự/số nguyên sang
+dạng Factor có nhãn rõ ràng để sẵn sàng cho các kiểm định suy diễn (ANOVA, Kruskal-Wallis) và
+hồi quy. Biến \texttt{vitamins} được giữ nguyên dạng số. Dữ liệu sạch (76 dòng $\times$ 13 cột)
+được lưu ra \texttt{data/processed/} dưới hai dạng: \texttt{.csv} để xem và \texttt{.rds} để
+giữ kiểu factor và tên sản phẩm cho các bước sau. Bộ kiểm tra \texttt{tests/test\_preprocess.R}
+xác nhận 10 điều kiện của dữ liệu sạch (số dòng, số cột, không còn \texttt{NA}, đã chia
+\texttt{weight}, điền đúng trung vị\ldots) và đều đạt.
+
+\begin{lstlisting}
+# 4.5. Đổi mfr và shelf sang factor có nhãn rõ ràng (vitamins giữ dạng số)
+mfr_labels <- c("G" = "General Mills", "K" = "Kelloggs", "N" = "Nabisco",
+                "P" = "Post", "Q" = "Quaker Oats", "R" = "Ralston Purina")
+shelf_labels <- c("Kệ 1 (Thấp)", "Kệ 2 (Vừa)", "Kệ 3 (Cao)")
+
+format_factors <- function(cereal) {
+  cereal$mfr <- factor(mfr_labels[cereal$mfr])
+  cereal$shelf <- factor(cereal$shelf, levels = c(1, 2, 3), labels = shelf_labels)
+  cereal
+}
+
+# Toàn bộ Phần 4: dữ liệu gốc (77 x 16) -> dữ liệu sạch (76 x 13)
+cereal_raw   <- read_raw_cereal()
+cereal_final <- format_factors(normalize_per_oz(impute_median(filter_sample(cereal_raw))))
+write.csv(cereal_final, "data/processed/cereal_cleaned.csv", row.names = FALSE)
+saveRDS(cereal_final, "data/processed/cereal_cleaned.rds")
+\end{lstlisting}
+
+% =====================================================================
+\section{THỐNG KÊ MÔ TẢ}
+\label{sec:mota}
+% =====================================================================
+
+\subsection{Tính toán các thống kê mô tả}
+
+\subsubsection{Thống kê mô tả biến định tính (mfr, shelf) và biến rời rạc (vitamins)}
+
+\begin{table}[H]
+\centering
+\caption{Phân bố tần số, tỷ lệ phần trăm của nhà sản xuất, vị trí kệ và hàm lượng vitamin}
+\label{tab:tanso}
+\begin{tabular}{l l c c}
+\toprule
+Biến & Phân nhóm & Tần số ($n_k$) & Tỷ lệ ($f_k$, \%) \\
+\midrule
+\multirow{6}{*}{Nhà sản xuất (mfr)}
+  & General Mills  & 22 & 28,95 \\
+  & Kelloggs       & 23 & 30,26 \\
+  & Nabisco        & 6  & 7,89 \\
+  & Post           & 9  & 11,84 \\
+  & Quaker Oats    & 8  & 10,53 \\
+  & Ralston Purina & 8  & 10,53 \\
+\midrule
+\multirow{3}{*}{Vị trí kệ (shelf)}
+  & Kệ 1 (Thấp) & 20 & 26,32 \\
+  & Kệ 2 (Vừa)  & 20 & 26,32 \\
+  & Kệ 3 (Cao)  & 36 & 47,37 \\
+\midrule
+\multirow{3}{*}{Hàm lượng vitamin (\%)}
+  & 0\%   & 8  & 10,53 \\
+  & 25\%  & 62 & 81,58 \\
+  & 100\% & 6  & 7,89 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Từ kết quả Bảng~\ref{tab:tanso}, cơ cấu mẫu bộc lộ ba đặc điểm phân bố đáng chú ý:
+\begin{itemize}
+  \item \textbf{Sự mất cân bằng cỡ mẫu của biến mfr:} Mẫu bị chi phối bởi Kelloggs và General
+  Mills, gộp chung gần 60\% tổng số sản phẩm (59,21\%). Ngược lại, các hãng còn lại có quy mô
+  mẫu khá nhỏ, đặc biệt là Nabisco chỉ có 6 sản phẩm. Sự chênh lệch cỡ mẫu này đòi hỏi phải
+  kiểm tra chặt chẽ tính đồng nhất phương sai, và kết quả ở các nhóm nhỏ cần được diễn giải
+  thận trọng.
+  \item \textbf{Sự tập trung trưng bày tại vị trí kệ cao:} Kệ 3 (Cao) là nhóm áp đảo với 36 sản
+  phẩm (chiếm 47,37\%), gần gấp đôi quy mô của Kệ 1 (Thấp) và Kệ 2 (Vừa).
+  \item \textbf{Sự co cụm mạnh của vitamins:} Có tới 62/76 sản phẩm được bổ sung vi chất ở mức
+  tiêu chuẩn (25\%) nhu cầu khuyến nghị hằng ngày, trong khi nhóm không bổ sung (0\%) và nhóm
+  tăng cường tối đa (100\%) chỉ chiếm tỷ trọng nhỏ.
+\end{itemize}
+
+\subsubsection{Thống kê mô tả các biến định lượng}
+
+\begin{table}[H]
+\centering
+\caption{Thống kê mô tả các biến định lượng (8 biến dinh dưỡng và total\_carbs tính trên 1 oz; rating và vitamins giữ nguyên)}
+\label{tab:dinhluong}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{l c r r r r r r r r r}
+\toprule
+Biến & $n$ & Mean & SD & Min & $Q_1$ & Median & $Q_3$ & Max & IQR & Skewness \\
+\midrule
+rating      & 76 & 42,51  & 14,07 & 18,04 & 32,93  & 40,25  & 50,78  & 93,70  & 17,85 & 0,94 \\
+calories    & 76 & 104,05 & 13,94 & 50,00 & 100,00 & 107,18 & 110,00 & 150,00 & 10,00 & $-0{,}22$ \\
+protein     & 76 & 2,47   & 1,08  & 1,00  & 2,00   & 2,13   & 3,00   & 6,00   & 1,00  & 1,03 \\
+fat         & 76 & 0,97   & 0,99  & 0,00  & 0,00   & 1,00   & 1,38   & 5,00   & 1,38  & 1,33 \\
+sodium      & 76 & 155,37 & 81,39 & 0,00  & 126,25 & 161,65 & 202,50 & 320,00 & 76,25 & $-0{,}41$ \\
+fiber       & 76 & 2,08   & 2,31  & 0,00  & 1,00   & 1,77   & 3,00   & 14,00  & 2,00  & 2,72 \\
+carbo       & 76 & 14,60  & 4,23  & 5,00  & 11,46  & 14,00  & 17,00  & 26,00  & 5,54  & 0,35 \\
+sugars      & 76 & 6,71   & 4,07  & 0,00  & 3,00   & 6,47   & 10,00  & 15,00  & 7,00  & 0,08 \\
+potass      & 76 & 93,75  & 63,22 & 20,00 & 43,75  & 90,00  & 114,59 & 330,00 & 70,84 & 1,66 \\
+total\_carbs & 76 & 21,31 & 3,48  & 8,00  & 19,55  & 21,00  & 24,00  & 27,00  & 4,45  & $-1{,}13$ \\
+vitamins    & 76 & 28,29  & 22,49 & 0,00  & 25,00  & 25,00  & 25,00  & 100,00 & 0,00  & 2,44 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Căn cứ vào hệ số bất đối xứng $G_1$ theo quy ước ở mục 3.1.2 và sự chênh lệch giữa trung bình
+($\xbar$) với trung vị ($\xmed$), 11 biến định lượng được phân thành 3 nhóm hình dạng phân phối:
+\begin{itemize}
+  \item \textbf{Nhóm lệch mạnh ($|G_1| > 1$):} Lệch phải gồm fiber (2,72), vitamins (2,44),
+  potass (1,66), fat (1,33) và protein (1,03); phần lớn sản phẩm tập trung ở vùng giá trị thấp,
+  trong khi một số ít ngũ cốc chuyên biệt kéo dài đuôi phân phối về phía bên phải. Riêng
+  \texttt{total\_carbs} lệch trái mạnh ($G_1 = -1{,}13$): phần lõi phân phối ổn định
+  ($IQR = 4{,}45$ g quanh trung vị $\xmed = 21{,}00$ g) nhưng có đuôi trái do các dòng ngũ cốc
+  cám ít tinh bột.
+  \item \textbf{Nhóm lệch vừa ($0{,}5 \le |G_1| \le 1$):} Biến phụ thuộc \texttt{rating} lệch
+  phải vừa ($G_1 = 0{,}94$; $\xbar = 42{,}51 > \xmed = 40{,}25$ điểm; khoảng biến thiên rộng từ
+  18,04 đến 93,70 điểm).
+  \item \textbf{Nhóm tương đối đối xứng ($|G_1| < 0{,}5$):} Gồm sugars (0,08), carbo (0,35),
+  calories ($-0{,}22$) và sodium ($-0{,}41$). Hàm lượng đường và tinh bột phân bố khá cân đối
+  quanh tâm. Calories có hệ số bất đối xứng nhỏ nhưng co cụm rất chặt quanh vùng
+  100 -- 110 kcal/oz ($IQR = 10{,}00$ kcal) và có ngoại lai ở cả hai phía; sodium hơi lệch trái
+  nhẹ do nhóm sản phẩm không thêm muối (0 mg).
+\end{itemize}
+
+\subsubsection{Phát hiện và biện luận giá trị ngoại lai theo hàng rào Tukey}
+
+\begin{table}[H]
+\centering
+\caption{Tổng hợp giá trị ngoại lai theo hàng rào Tukey và sản phẩm tương ứng}
+\label{tab:ngoailai}
+\small
+\begin{tabular}{l r r c L{7.6cm}}
+\toprule
+Biến & \makecell[r]{Ngưỡng\\dưới ($L$)} & \makecell[r]{Ngưỡng\\trên ($U$)} & \makecell{Số\\lượng} & Giá trị ngoại lai và tên sản phẩm cụ thể \\
+\midrule
+rating & 6,16 & 77,55 & 1 & 93,70 (All-Bran with Extra Fiber) \\
+\midrule
+calories & 85,00 & 125,00 & 5 & 50,00 (All-Bran with Extra Fiber); 70,00 (100\% Bran);
+  70,00 (All-Bran); 150,00 (Muesli Raisins, Dates, \& Almonds); 150,00 (Muesli Raisins,
+  Peaches, \& Pecans) \\
+\midrule
+protein & 0,50 & 4,50 & 3 & 5,00 (Quaker Oatmeal); 6,00 (Cheerios); 6,00 (Special K) \\
+\midrule
+fat & $-2{,}06$ & 3,44 & 1 & 5,00 (100\% Natural Bran) \\
+\midrule
+sodium & 11,88 & 316,88 & 9 & 0,00 (Frosted Mini-Wheats, Puffed Rice, Puffed Wheat, Quaker
+  Oatmeal, Raisin Squares, Shredded Wheat, Shredded Wheat 'n'Bran, Shredded Wheat spoon size);
+  320,00 (Product 19) \\
+\midrule
+fiber & $-2{,}00$ & 6,00 & 3 & 9,00 (All-Bran); 10,00 (100\% Bran); 14,00 (All-Bran with Extra Fiber) \\
+\midrule
+carbo & 3,15 & 25,31 & 1 & 26,00 (Puffed Rice) \\
+\midrule
+potass & $-62{,}52$ & 220,86 & 3 & 280,00 (100\% Bran); 320,00 (All-Bran); 330,00 (All-Bran with Extra Fiber) \\
+\midrule
+total\_carbs & 12,87 & 30,68 & 3 & 8,00 (All-Bran with Extra Fiber); 11,00 (100\% Bran); 12,00 (All-Bran) \\
+\midrule
+vitamins & 25,00 & 25,00 & 14 & 0,00 (8 sản phẩm mức 0\%); 100,00 (6 sản phẩm mức 100\%) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Nhận định và phương án xử lý ngoại lai:
+\begin{itemize}
+  \item \textbf{Cụm ngũ cốc giàu cám lúa mì:} Các ngoại lai trên của fiber, potass, rating cùng
+  các ngoại lai dưới của calories và total\_carbs đều rơi đồng thời vào đúng 3 sản phẩm chuyên
+  biệt (All-Bran with Extra Fiber, All-Bran, 100\% Bran). Đây là đặc tính dinh dưỡng thực tế
+  của dòng sản phẩm giàu chất xơ -- ít năng lượng, không phải sai số đo lường.
+  \item \textbf{Các ngoại lai đặc thù sản phẩm khác:} 8 ngoại lai dưới ở sodium (0,00 mg) đại
+  diện cho các dòng ngũ cốc nguyên hạt không thêm muối (như Shredded Wheat, Puffed Rice, Quaker
+  Oatmeal), còn 14 điểm ngoại lai ở vitamins phát sinh do $IQR = Q_3 - Q_1 = 25 - 25 = 0$ khi
+  81,58\% mẫu tập trung tại mức 25\%; đây là hệ quả của biến rời rạc, không phải giá trị bất
+  thường.
+  \item \textbf{Phương án xử lý:} Toàn bộ các điểm ngoại lai đều phản ánh đúng bản chất đa
+  dạng của sản phẩm thương mại. Do đó, nhóm quyết định giữ nguyên toàn bộ $N = 76$ quan sát,
+  đồng thời ưu tiên các thước đo vững (Median, IQR, hệ số Spearman) và các kiểm định phi tham số
+  khi cần thiết. Ảnh hưởng của cụm 3 sản phẩm cám lên hệ số tương quan được đánh giá cụ thể ở
+  mục~\ref{sec:tuongquan}.
+\end{itemize}
+
+\subsection{Mô tả dữ liệu bằng đồ thị}
+
+\subsubsection{Biểu đồ phân phối tần suất (Histogram kết hợp đường mật độ KDE)}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{Hinh_1_Histogram_KDE.png}
+\caption{Phân phối tần suất (Histogram + KDE) của 10 biến định lượng liên tục (N = 76). Nét
+đứt đỏ: trung bình; nét liền xanh: trung vị.}
+\label{fig:hist}
+\end{figure}
+
+Đối chiếu trực quan trên Hình~\ref{fig:hist} cho thấy sự tương đồng với các chỉ số tại
+Bảng~\ref{tab:dinhluong}:
+\begin{itemize}
+  \item Các biến fiber, potass, protein và biến phụ thuộc rating có đỉnh phân phối lệch hẳn về
+  bên trái, đường trung bình (nét đứt đỏ) nằm bên phải đường trung vị (nét liền xanh) và kéo
+  đuôi dài về phía giá trị cao. Biến fat cũng lệch phải ($G_1 = 1{,}33$) nhưng là ngoại lệ về vị
+  trí hai đường tham chiếu: trung bình $\xbar = 0{,}97$ nhỏ hơn trung vị $\xmed = 1{,}00$, do
+  có nhiều sản phẩm 0 g chất béo kéo trung bình xuống.
+  \item Ngược lại, sugars và carbo có dạng phân phối trải đều và cân xứng hơn quanh hai đường
+  tham chiếu trung tâm, còn calories và total\_carbs tập trung dày đặc quanh vùng đỉnh
+  100 -- 110 kcal và 20 -- 24 g.
+  \item Hình dạng lệch của nhiều biến gợi ý rằng giả định phân phối chuẩn có thể không thỏa.
+  Tuy nhiên, với ANOVA, giả định chuẩn áp dụng cho rating \emph{trong từng nhóm} (hoặc phần dư),
+  nên kết luận chỉ được rút ra sau khi kiểm định Shapiro-Wilk theo từng nhóm ở phần suy diễn;
+  histogram của toàn mẫu chỉ mang tính gợi ý.
+\end{itemize}
+
+\subsubsection{Biểu đồ hộp đơn biến (Boxplot)}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{Hinh_2_Boxplot.png}
+\caption{Biểu đồ hộp (Boxplot) phát hiện giá trị ngoại lai theo hàng rào Tukey (N = 76)}
+\label{fig:box}
+\end{figure}
+
+Biểu đồ hộp nằm ngang ở Hình~\ref{fig:box} xác nhận trực quan vị trí và mật độ các điểm dị
+biệt (tô đỏ) khớp với kết quả tính toán tại Bảng~\ref{tab:ngoailai}:
+\begin{itemize}
+  \item Các biến fiber, potass, protein, fat và rating chỉ xuất hiện ngoại lai phía trên râu
+  phải (phản ánh nhóm sản phẩm giàu dưỡng chất), trong khi total\_carbs có ngoại lai ở đầu trái
+  và carbo có ngoại lai ở đầu phải.
+  \item Các biến calories, sodium và vitamins có ngoại lai ở cả hai phía; riêng sugars có hộp tứ
+  phân vị cân đối và hoàn toàn không có điểm nào vượt khỏi hai đầu râu Tukey.
+\end{itemize}
+
+\subsubsection{Biểu đồ hộp phân nhóm (Grouped Boxplot) theo mfr và shelf}
+
+\begin{table}[H]
+\centering
+\caption{Thống kê mô tả điểm đánh giá (rating) phân tổ theo Nhà sản xuất và Vị trí kệ}
+\label{tab:nhom}
+\begin{tabular}{l l c r r r r}
+\toprule
+Yếu tố phân nhóm & Phân nhóm & $n$ & Mean & SD & Median & IQR \\
+\midrule
+\multirow{6}{*}{Nhà sản xuất (mfr)}
+  & General Mills  & 22 & 34,49 & 8,95  & 36,18 & 11,62 \\
+  & Kelloggs       & 23 & 44,04 & 14,46 & 40,56 & 15,54 \\
+  & Nabisco        & 6  & 67,97 & 5,51  & 68,32 & 6,24 \\
+  & Post           & 9  & 41,71 & 10,05 & 40,92 & 16,82 \\
+  & Quaker Oats    & 8  & 42,92 & 16,80 & 47,42 & 22,35 \\
+  & Ralston Purina & 8  & 41,54 & 6,08  & 41,72 & 9,08 \\
+\midrule
+\multirow{3}{*}{Vị trí kệ (shelf)}
+  & Kệ 1 (Thấp) & 20 & 46,15 & 13,56 & 43,93 & 15,07 \\
+  & Kệ 2 (Vừa)  & 20 & 33,98 & 13,53 & 30,58 & 15,71 \\
+  & Kệ 3 (Cao)  & 36 & 45,22 & 12,97 & 40,80 & 15,48 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{Hinh_3_GroupedBoxplot.png}
+\caption{So sánh phân phối điểm đánh giá (rating) theo Nhà sản xuất và Vị trí kệ (N = 76).
+Hình thoi trắng: trung bình nhóm.}
+\label{fig:group}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Hàm lượng đường và chất xơ (trên 1 oz) theo vị trí kệ}
+\label{tab:duongke}
+\begin{tabular}{l c r r r}
+\toprule
+Vị trí kệ & $n$ & Mean sugars & Median sugars & Mean fiber \\
+\midrule
+Kệ 1 (Thấp) & 20 & 5,20 & 3,00  & 1,72 \\
+Kệ 2 (Vừa)  & 20 & 9,80 & 11,50 & 0,89 \\
+Kệ 3 (Cao)  & 36 & 5,83 & 6,00  & 2,94 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Quan sát Bảng~\ref{tab:nhom}, Bảng~\ref{tab:duongke} và Hình~\ref{fig:group}(a), (b) rút ra hai
+nhận định trọng tâm (mới ở mức mô tả, chưa qua kiểm định):
+\begin{itemize}
+  \item \textbf{Chênh lệch rõ rệt theo biến mfr:} Toàn bộ hộp tứ phân vị của Nabisco nằm tách
+  biệt ở vùng điểm cao ($\xbar = 67{,}97$; $\xmed = 68{,}32$) với độ phân tán rất hẹp
+  ($SD = 5{,}51$; $IQR = 6{,}24$), cao gần gấp đôi so với General Mills ở vị trí thấp nhất
+  ($\xbar = 34{,}49$; $\xmed = 36{,}18$). Lưu ý Nabisco chỉ có $n = 6$. Nhóm Kelloggs có trung
+  bình bị kéo lên cao hơn trung vị ($44{,}04$ so với $40{,}56$) do điểm ngoại lai đỏ tại 93,70
+  điểm, trong khi Quaker Oats có độ biến động nội bộ lớn nhất ($SD = 16{,}80$; $IQR = 22{,}35$).
+  \item \textbf{Sự phân hóa theo Vị trí kệ (shelf):} Sản phẩm đặt tại Kệ 2 (Vừa) có rating
+  thấp hơn ($\xbar = 33{,}98$) so với Kệ 1 (Thấp, $\xbar = 46{,}15$) và Kệ 3 (Cao,
+  $\xbar = 45{,}22$). Bảng~\ref{tab:duongke} cho thấy Kệ 2 cũng là nơi trưng bày nhiều ngũ cốc
+  nhiều đường nhất (đường trung bình 9,80 g/oz so với 5,20 và 5,83 g/oz ở kệ 1 và kệ 3) và ít
+  chất xơ nhất. Khác biệt này có ý nghĩa thống kê hay không sẽ do ANOVA/Kruskal-Wallis kết
+  luận; theo mục~\ref{sec:rating}, nếu có, nó phản ánh thành phần dinh dưỡng của các sản phẩm
+  trên từng kệ.
+\end{itemize}
+
+\subsubsection{Ma trận tương quan và Biểu đồ phân tán tiêu biểu}
+\label{sec:tuongquan}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{Hinh_4_Correlation_Scatter.png}
+\caption{Ma trận tương quan Pearson và Biểu đồ phân tán (Scatter Plot) của điểm đánh giá (N = 76)}
+\label{fig:corr}
+\end{figure}
+
+Vì hệ số Pearson nhạy với ngoại lai, trong khi nhóm đã quyết định giữ các ngoại lai
+(mục 5.1.3), Bảng~\ref{tab:pearsonspearman} báo cáo song song hệ số Pearson, hệ số Spearman và
+hệ số Pearson khi tạm bỏ 3 sản phẩm cám (100\% Bran, All-Bran, All-Bran with Extra Fiber).
+
+\begin{table}[H]
+\centering
+\caption{Hệ số tương quan của rating với từng biến: Pearson, Spearman và Pearson khi bỏ 3 sản phẩm cám}
+\label{tab:pearsonspearman}
+\begin{tabular}{l r r r}
+\toprule
+Biến & Pearson ($N = 76$) & Spearman ($N = 76$) & Pearson bỏ cám ($N = 73$) \\
+\midrule
+sugars       & $-0{,}765$ & $-0{,}823$ & $-0{,}791$ \\
+calories     & $-0{,}648$ & $-0{,}648$ & $-0{,}511$ \\
+total\_carbs & $-0{,}585$ & $-0{,}491$ & $-0{,}414$ \\
+fat          & $-0{,}397$ & $-0{,}431$ & $-0{,}406$ \\
+sodium       & $-0{,}360$ & $-0{,}195$ & $-0{,}426$ \\
+vitamins     & $-0{,}240$ & $-0{,}332$ & $-0{,}262$ \\
+carbo        & $0{,}255$  & $0{,}395$  & $0{,}529$ \\
+potass       & $0{,}524$  & $0{,}425$  & $0{,}325$ \\
+protein      & $0{,}574$  & $0{,}653$  & $0{,}534$ \\
+fiber        & $0{,}660$  & $0{,}584$  & $0{,}518$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Từ Hình~\ref{fig:corr}(a), (b) và Bảng~\ref{tab:pearsonspearman}, mối liên hệ giữa điểm đánh
+giá rating và các thành phần dinh dưỡng thể hiện hai chiều hướng đối lập rõ rệt (phân mức theo
+quy ước ở mục 3.5.1):
+\begin{itemize}
+  \item \textbf{Nhóm tương quan nghịch:} Chỉ có hàm lượng đường sugars đạt mức tương quan âm
+  \emph{mạnh} ($r = -0{,}765$; Spearman $-0{,}823$) và ổn định khi bỏ 3 sản phẩm cám. Năng
+  lượng calories ($r = -0{,}648$) và total\_carbs ($-0{,}585$) ở mức \emph{trung bình}; fat,
+  sodium và vitamins tương quan âm yếu. Trên Hình~\ref{fig:corr}(b), các điểm quan sát bám khá
+  sát đường hồi quy dốc xuống, cho thấy sản phẩm càng nhiều đường và năng lượng thì rating càng
+  thấp.
+  \item \textbf{Nhóm tương quan thuận:} Chất xơ fiber ($r = 0{,}660$), chất đạm protein
+  ($0{,}574$) và kali potass ($0{,}524$) có tương quan dương ở mức \emph{trung bình} với rating;
+  carbo tương quan thuận yếu.
+  \item \textbf{Ảnh hưởng của cụm sản phẩm cám:} Tương quan của fiber, potass và calories với
+  rating giảm rõ khi bỏ 3 sản phẩm cám (potass từ 0,524 xuống 0,325; fiber từ 0,660 xuống
+  0,518), và hệ số Spearman của các biến này cũng thấp hơn Pearson. Như vậy một phần độ lớn
+  của các hệ số Pearson này đến từ 3 sản phẩm cám, trong khi tương quan của sugars vẫn mạnh
+  theo cả ba cách tính.
+  \item \textbf{Chiều tương quan không phải chiều tác động:} potass tương quan thuận với rating,
+  nhưng trong công thức tính rating (mục~\ref{sec:rating}) hệ số của potass lại âm
+  ($-0{,}034$), vì potass luôn đi kèm fiber. Do đó ``kali tương quan thuận với rating'' là mô
+  tả đúng, nhưng không được diễn giải thành ``kali làm tăng rating'' ở phần hồi quy.
+  \item \textbf{Nguy cơ đa cộng tuyến:} Ma trận tương quan Hình~\ref{fig:corr}(a) ghi nhận cặp
+  fiber -- potass có hệ số tương quan rất mạnh ($r = 0{,}923$; Spearman 0,879; vẫn 0,876 khi bỏ
+  3 sản phẩm cám), cùng các cặp total\_carbs -- fiber ($-0{,}838$) và total\_carbs -- potass
+  ($-0{,}804$). Tính trên 9 biến dinh dưỡng (dữ liệu 1 oz), VIF của carbo (13,5), sugars (11,7)
+  và fiber (10,5) đã vượt ngưỡng 10, potass (8,9) và calories (7,1) vượt ngưỡng 5. Đa cộng tuyến
+  vì vậy ở mức nặng và cần được xử lý (bỏ bớt hoặc gộp biến) trước khi chốt mô hình hồi quy.
+\end{itemize}
+
+% =====================================================================
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{TÀI LIỆU THAM KHẢO}
+\bibitem{kaggle} Chris Crawford. \textit{80 Cereals: Nutrition data on 80 cereal products}.
+Kaggle. \url{https://www.kaggle.com/datasets/crawford/80-cereals}
+\bibitem{r} R Core Team. \textit{R: A Language and Environment for Statistical Computing}.
+R Foundation for Statistical Computing, Vienna, Austria. \url{https://www.R-project.org/}
+\bibitem{e1071} D. Meyer và cộng sự. \textit{e1071: Misc Functions of the Department of
+Statistics, Probability Theory Group, TU Wien}. R package.
+\bibitem{ggplot2} H. Wickham. \textit{ggplot2: Elegant Graphics for Data Analysis}.
+Springer-Verlag New York, 2016.
+\end{thebibliography}
+
+\end{document}

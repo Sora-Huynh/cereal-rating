@@ -1,6 +1,7 @@
 # =====================================================================
 # src/plots.R
 # Các hàm vẽ Hình 1 – 4 của Phần 5 và hàm lưu hình.
+# Hình không in tiêu đề "Hình x" bên trong ảnh: chú thích nằm trong báo cáo LaTeX.
 # Script gọi các hàm này: analysis/03_descriptive_plots.R
 # Cần source("src/config.R") trước.
 # =====================================================================
@@ -49,9 +50,7 @@ plot_hist_kde <- function(df, vars) {
     facet_wrap(~ variable, scales = "free", ncol = 4) +
     theme_minimal(base_size = 10) +
     theme(strip.text = element_text(face = "bold")) +
-    labs(title = sprintf("Hình 1: Phân phối tần suất (Histogram + KDE) của %d biến định lượng liên tục (N = %d)",
-                         length(vars), nrow(df)),
-         x = NULL, y = "Mật độ")
+    labs(x = NULL, y = "Mật độ")
 }
 
 # --- Hình 2 (mục 5.2.2): Boxplot đơn biến, điểm đỏ = ngoại lai theo hàng rào Tukey
@@ -64,9 +63,7 @@ plot_box_univariate <- function(df, vars) {
           axis.ticks.y = element_blank(),
           panel.grid.major.y = element_blank(),
           strip.text = element_text(face = "bold")) +
-    labs(title = sprintf("Hình 2: Biểu đồ hộp (Boxplot) phát hiện giá trị ngoại lai theo hàng rào Tukey (N = %d)",
-                         nrow(df)),
-         x = NULL, y = NULL)
+    labs(x = NULL, y = NULL)
 }
 
 # --- Hình 3 (mục 5.2.3): Boxplot rating theo mfr và theo shelf, hình thoi trắng = trung bình
@@ -90,12 +87,7 @@ plot_rating_by_group <- function(df) {
     labs(title = "(b) Phân phối điểm rating theo Vị trí kệ",
          x = "Vị trí kệ trưng bày (shelf)", y = NULL)
 
-  (plot_mfr + plot_shelf) +
-    plot_annotation(
-      title = sprintf("Hình 3: So sánh phân phối điểm đánh giá (rating) theo Nhà sản xuất và Vị trí kệ (N = %d)",
-                      nrow(df)),
-      theme = theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 12))
-    )
+  plot_mfr + plot_shelf
 }
 
 # Biểu đồ phân tán rating theo một biến, có đường hồi quy và nhãn hệ số r
@@ -139,10 +131,5 @@ plot_corr_scatter <- function(df, corr_matrix) {
                                     "#fdae61", "topright")
 
   (plot_heatmap | (p_sugars / p_fiber / p_calories)) +
-    plot_layout(widths = c(1.35, 1)) +
-    plot_annotation(
-      title = sprintf("Hình 4: Ma trận tương quan Pearson và Biểu đồ phân tán (Scatter Plot) của điểm đánh giá (N = %d)",
-                      nrow(df)),
-      theme = theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 12))
-    )
+    plot_layout(widths = c(1.35, 1))
 }
