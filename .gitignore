@@ -1,0 +1,22 @@
+# Dữ liệu đã xử lý: tái tạo được bằng analysis/01_preprocess.R
+data/processed/*
+!data/processed/.gitkeep
+
+# Kết quả sinh tự động (bảng, hình); chạy lại run_all.R để có
+results/figures/*
+!results/figures/.gitkeep
+results/tables/*
+!results/tables/.gitkeep
+
+# R / RStudio
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+Rplots.pdf
+
+# Hệ điều hành / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
