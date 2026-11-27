@@ -307,16 +307,17 @@ Trong quá trình kiểm tra dữ liệu, nhóm hồi quy \texttt{rating} theo 9
 \end{multline}
 Công thức này còn được tính với chính các mã khuyết $-1$ như số thật. Như vậy
 \texttt{rating} \emph{không} phải là một điểm đánh giá độc lập, mà là một điểm tính sẵn từ
-các cột dinh dưỡng theo khẩu phần. Phát hiện này có ba hệ quả nhóm ghi nhận cho các phần sau:
-\begin{itemize}
-  \item Hồi quy trên dữ liệu gốc không có sai số ngẫu nhiên, nên các kiểm định $t$, $F$ và
-  phần chẩn đoán phần dư ở mục~\ref{sec:ols} sẽ không còn ý nghĩa trên dữ liệu đó.
-  \item \texttt{mfr} và \texttt{shelf} không có tác động riêng lên \texttt{rating}; mọi chênh
-  lệch rating giữa các hãng và các kệ phản ánh khác biệt về thành phần dinh dưỡng.
-  \item Vì rating tính theo khẩu phần, sau khi chuẩn hóa về 1 oz và điền khuyết, cùng mô hình
-  chỉ còn $R^2 = 0{,}979$; phần dư của mô hình trên dữ liệu 1 oz đến từ bước chuẩn hóa (13 sản
-  phẩm có weight $\neq 1$) và điền khuyết, không phải sai số đo.
-\end{itemize}
+các cột dinh dưỡng theo khẩu phần. Phát hiện này có ba hệ quả nhóm ghi nhận cho các phần sau.
+
+Hồi quy trên dữ liệu gốc không có sai số ngẫu nhiên, nên các kiểm định $t$, $F$ và
+phần chẩn đoán phần dư ở mục~\ref{sec:ols} sẽ không còn ý nghĩa trên dữ liệu đó.
+
+\texttt{mfr} và \texttt{shelf} không có tác động riêng lên \texttt{rating}; mọi chênh
+lệch rating giữa các hãng và các kệ phản ánh khác biệt về thành phần dinh dưỡng.
+
+Vì rating tính theo khẩu phần, sau khi chuẩn hóa về 1 oz và điền khuyết, cùng mô hình
+chỉ còn $R^2 = 0{,}979$; phần dư của mô hình trên dữ liệu 1 oz đến từ bước chuẩn hóa (13 sản
+phẩm có weight $\neq 1$) và điền khuyết, không phải sai số đo.
 Phần Thống kê mô tả (Phần~\ref{sec:mota}) không bị ảnh hưởng. Hướng xử lý cụ thể cho phần
 suy diễn sẽ được nhóm thống nhất với giảng viên trước khi thực hiện.
 
@@ -451,7 +452,7 @@ bình mẫu và $\xmed$ ký hiệu trung vị mẫu.
   \item \textbf{Khoảng biến thiên (Range, $R$):} $R = x_{\max} - x_{\min}$.
   \item \textbf{Tứ phân vị và Khoảng tứ phân vị (IQR):} Tứ phân vị thứ nhất $Q_1$ tại vị trí
   25\%, tứ phân vị thứ ba $Q_3$ tại vị trí 75\%. Nhóm tính phân vị mức $p$ theo phương pháp
-  nội suy tuyến tính (mặc định \texttt{type = 7} của R):
+  nội suy tuyến tính:
   \begin{equation}
     Q(p) = x_{(\lfloor h \rfloor)} + (h - \lfloor h \rfloor)\left(x_{(\lfloor h \rfloor + 1)} - x_{(\lfloor h \rfloor)}\right),
     \qquad h = (n-1)p + 1
@@ -464,7 +465,7 @@ bình mẫu và $\xmed$ ký hiệu trung vị mẫu.
   $Q_1$, $Q_3$ hơi khác, kéo theo hàng rào Tukey ở mục~\ref{sec:tukey} thay đổi.
 
   \item \textbf{Hệ số bất đối xứng (Skewness, $G_1$):} Đo mức độ lệch của phân phối. Nhóm dùng
-  hệ số có hiệu chỉnh mẫu (\texttt{e1071::skewness(type = 2)}, giống SPSS/SAS):
+  hệ số có hiệu chỉnh mẫu:
   \begin{equation}
     g_1 = \frac{\frac{1}{n}\sum_{i=1}^{n}(x_i-\xbar)^3}{\left[\frac{1}{n}\sum_{i=1}^{n}(x_i-\xbar)^2\right]^{3/2}},
     \qquad
@@ -642,8 +643,7 @@ là hiệu ứng của nhóm $i$; $\varepsilon_{ij}$ là sai số ngẫu nhiên.
 
 Cặp giả thuyết: $H_0: \sigma_1^2 = \sigma_2^2 = \dots = \sigma_k^2$ đối
 $H_1: \exists\,(i,l)$ sao cho $\sigma_i^2 \ne \sigma_l^2$. Thống kê được tính trên độ lệch tuyệt
-đối so với \emph{trung vị} nhóm $Z_{ij} = |Y_{ij} - \tilde{Y}_i|$ (biến thể Brown-Forsythe, cũng
-là mặc định của \texttt{car::leveneTest}), nên ít bị ảnh hưởng bởi tính phi chuẩn của dữ liệu:
+đối so với \emph{trung vị} nhóm $Z_{ij} = |Y_{ij} - \tilde{Y}_i|$ (biến thể Brown-Forsythe), nên ít bị ảnh hưởng bởi tính phi chuẩn của dữ liệu:
 \begin{equation}
   W = \frac{N-k}{k-1}\cdot
       \frac{\sum_{i=1}^{k} n_i(\bar{Z}_{i\cdot} - \bar{Z}_{\cdot\cdot})^2}
@@ -719,7 +719,7 @@ trung bình), gọi $R_i$ là tổng hạng của nhóm $i$:
 \begin{equation}
   H = \frac{12}{N(N+1)}\sum_{i=1}^{k}\frac{R_i^2}{n_i} - 3(N+1)
 \end{equation}
-Khi có hạng trùng, thống kê được hiệu chỉnh (đây cũng là cách \texttt{kruskal.test} trong R tính):
+Khi có hạng trùng, thống kê được hiệu chỉnh:
 \begin{equation}
   H_{c} = \frac{H}{1 - \dfrac{\sum_{g}(t_g^3 - t_g)}{N^3 - N}} \;\approx\; \chi^2(k-1)
 \end{equation}
@@ -749,7 +749,7 @@ Kiểm định ý nghĩa thống kê của hệ số tương quan ($H_0: \rho = 
 
 Đo lường mối quan hệ đơn điệu (không nhất thiết tuyến tính), không yêu cầu phân phối chuẩn và
 vững hơn trước ngoại lai. Về định nghĩa, $r_s$ là hệ số Pearson tính trên thứ hạng của hai
-biến (hạng trùng nhận hạng trung bình); R tính theo cách này. Khi \emph{không có hạng trùng},
+biến (hạng trùng nhận hạng trung bình). Khi \emph{không có hạng trùng},
 công thức trên rút gọn thành:
 \begin{equation}
   r_s = 1 - \frac{6\sum_{i=1}^{n} d_i^2}{n(n^2-1)}
@@ -863,10 +863,7 @@ Phân rã biến thiên toàn phần:
 \section{TIỀN XỬ LÝ SỐ LIỆU}
 % =====================================================================
 
-Toàn bộ quy trình được viết bằng R, tổ chức thành các hàm trong \texttt{src/preprocess.R};
-script \texttt{analysis/01\_preprocess.R} gọi các hàm này theo đúng thứ tự mục 4.1 -- 4.5.
-Mọi đường dẫn tính từ thư mục gốc dự án, khai báo tập trung trong \texttt{src/config.R}, nên
-mã chạy được trên mọi máy. Các đoạn mã dưới đây được trích từ mã nguồn.
+Quy trình tiền xử lý được thực hiện trên phần mềm R theo đúng thứ tự các mục 4.1 -- 4.5 dưới đây.
 
 \subsection{Đọc dữ liệu và Khảo sát dữ liệu khuyết}
 
@@ -879,11 +876,10 @@ bước xử lý tiếp theo.
 
 \begin{lstlisting}
 # 4.1. Đọc dữ liệu gốc và chuyển mã ẩn -1 thành NA
-paths <- list(raw_data = "data/raw/cereal.csv")
 num_cols <- c("calories", "protein", "fat", "sodium", "fiber",
               "carbo", "sugars", "potass", "weight", "cups", "rating")
 
-read_raw_cereal <- function(path = paths$raw_data) {
+read_raw_cereal <- function(path = "cereal.csv") {
   cereal <- read.csv(path, stringsAsFactors = FALSE)
   cereal[num_cols] <- lapply(cereal[num_cols], function(x) {
     ifelse(x == -1, NA, as.numeric(x))
@@ -895,16 +891,14 @@ read_raw_cereal <- function(path = paths$raw_data) {
 \subsection{Lọc mẫu và Bớt biến sơ bộ}
 
 Việc lọc mẫu được thực hiện \emph{trước} bước điền khuyết, để trung vị dùng điền khuyết được
-tính trên đúng mẫu phân tích $N = 76$:
-\begin{itemize}
-  \item \textbf{Lọc mẫu:} Loại bỏ 1 quan trắc thuộc nhà sản xuất A (American Home Food
-  Products, sản phẩm Maypo) vì $n_A = 1$ không cho phép kiểm tra giả định và so sánh cặp cho
-  nhóm này, giữ lại tập mẫu phân tích chung gồm $N = 76$ quan trắc.
-  \item \textbf{Bớt biến sơ bộ:} Loại bỏ biến \texttt{name} (chỉ có chức năng định danh) và
-  biến \texttt{type} (chỉ có 3/77 sản phẩm ăn nóng). Tên sản phẩm được giữ làm tên dòng để tra
-  cứu ngoại lai ở Phần~\ref{sec:mota}. Biến \texttt{weight} được giữ lại tạm thời để dùng cho
-  bước quy đổi khẩu phần.
-\end{itemize}
+tính trên đúng mẫu phân tích $N = 76$. Cụ thể, nhóm loại bỏ 1 quan trắc thuộc nhà sản xuất A (American Home Food
+Products, sản phẩm Maypo) vì $n_A = 1$ không cho phép kiểm tra giả định và so sánh cặp cho
+nhóm này, giữ lại tập mẫu phân tích chung gồm $N = 76$ quan trắc.
+
+Song song đó, nhóm loại bỏ biến \texttt{name} (chỉ có chức năng định danh) và
+biến \texttt{type} (chỉ có 3/77 sản phẩm ăn nóng). Tên sản phẩm được giữ làm tên dòng để tra
+cứu ngoại lai ở Phần~\ref{sec:mota}. Biến \texttt{weight} được giữ lại tạm thời để dùng cho
+bước quy đổi khẩu phần.
 
 \begin{lstlisting}
 # 4.2. Lọc bỏ hãng A (n = 1) trước khi điền khuyết; bỏ name, type.
@@ -940,21 +934,20 @@ impute_median <- function(cereal, cols = c("carbo", "sugars", "potass")) {
 
 Do khối lượng khẩu phần (\texttt{weight}) giữa các loại ngũ cốc không đồng nhất (từ 0,5 oz
 đến 1,5 oz), so sánh trực tiếp các thành phần dinh dưỡng nguyên bản sẽ gây sai lệch do quy mô
-khẩu phần khác nhau.
-\begin{itemize}
-  \item \textbf{Chuẩn hóa quy mô khẩu phần:} Quy đổi 8 biến dinh dưỡng về hàm lượng trên 1 oz
-  bằng cách chia giá trị gốc cho \texttt{weight}:
-  \begin{equation}
-    \text{Nutrient}_{\text{norm}} = \frac{\text{Nutrient}}{\text{weight}}
-  \end{equation}
-  \texttt{rating} và \texttt{vitamins} giữ nguyên. Lưu ý theo mục~\ref{sec:rating}:
-  \texttt{rating} được tính theo khẩu phần gốc, nên với 13 sản phẩm có weight $\neq 1$, giá
-  trị dinh dưỡng sau chuẩn hóa không còn khớp chính xác với cách rating được tính.
-  \item \textbf{Bớt biến hoàn tất quy đổi:} Sau khi quy đổi, loại bỏ \texttt{weight} và
-  \texttt{cups} khỏi tập dữ liệu phân tích.
-  \item \textbf{Tạo biến khám phá total\_carbs:} \texttt{total\_carbs} = \texttt{carbo} +
-  \texttt{sugars} (tổng lượng bột đường trên 1 oz), chỉ phục vụ Thống kê mô tả.
-\end{itemize}
+khẩu phần khác nhau. Vì vậy, nhóm quy đổi 8 biến dinh dưỡng về hàm lượng trên 1 oz
+bằng cách chia giá trị gốc cho \texttt{weight}:
+\begin{equation}
+\text{Nutrient}_{\text{norm}} = \frac{\text{Nutrient}}{\text{weight}}
+\end{equation}
+\texttt{rating} và \texttt{vitamins} giữ nguyên. Lưu ý theo mục~\ref{sec:rating}:
+\texttt{rating} được tính theo khẩu phần gốc, nên với 13 sản phẩm có weight $\neq 1$, giá
+trị dinh dưỡng sau chuẩn hóa không còn khớp chính xác với cách rating được tính.
+
+Sau khi quy đổi, nhóm loại bỏ \texttt{weight} và
+\texttt{cups} khỏi tập dữ liệu phân tích.
+
+Cuối cùng, nhóm tạo biến khám phá \texttt{total\_carbs} = \texttt{carbo} +
+\texttt{sugars} (tổng lượng bột đường trên 1 oz), chỉ phục vụ Thống kê mô tả.
 
 \begin{lstlisting}
 # 4.4. Chuẩn hóa 8 biến dinh dưỡng về khẩu phần 1 oz, tạo total_carbs,
@@ -976,10 +969,9 @@ normalize_per_oz <- function(cereal, cols = nutri_cols) {
 Nhóm chuyển các biến phân nhóm (\texttt{mfr}, \texttt{shelf}) từ dạng ký tự/số nguyên sang
 dạng Factor có nhãn rõ ràng để sẵn sàng cho các kiểm định suy diễn (ANOVA, Kruskal-Wallis) và
 hồi quy. Biến \texttt{vitamins} được giữ nguyên dạng số. Dữ liệu sạch (76 dòng $\times$ 13 cột)
-được lưu ra \texttt{data/processed/} dưới hai dạng: \texttt{.csv} để xem và \texttt{.rds} để
-giữ kiểu factor và tên sản phẩm cho các bước sau. Bộ kiểm tra \texttt{tests/test\_preprocess.R}
-xác nhận 10 điều kiện của dữ liệu sạch (số dòng, số cột, không còn \texttt{NA}, đã chia
-\texttt{weight}, điền đúng trung vị\ldots) và đều đạt.
+được lưu lại để sử dụng cho các phần phân tích tiếp theo. Nhóm kiểm tra lại dữ liệu sạch theo 10
+điều kiện (số dòng, số cột, không còn \texttt{NA}, đã chia \texttt{weight}, điền đúng trung
+vị\ldots) và đều đạt.
 
 \begin{lstlisting}
 # 4.5. Đổi mfr và shelf sang factor có nhãn rõ ràng (vitamins giữ dạng số)
@@ -996,8 +988,7 @@ format_factors <- function(cereal) {
 # Toàn bộ Phần 4: dữ liệu gốc (77 x 16) -> dữ liệu sạch (76 x 13)
 cereal_raw   <- read_raw_cereal()
 cereal_final <- format_factors(normalize_per_oz(impute_median(filter_sample(cereal_raw))))
-write.csv(cereal_final, "data/processed/cereal_cleaned.csv", row.names = FALSE)
-saveRDS(cereal_final, "data/processed/cereal_cleaned.rds")
+write.csv(cereal_final, "cereal_cleaned.csv", row.names = FALSE)
 \end{lstlisting}
 
 % =====================================================================
@@ -1038,19 +1029,20 @@ Biến & Phân nhóm & Tần số ($n_k$) & Tỷ lệ ($f_k$, \%) \\
 \end{tabular}
 \end{table}
 
-Từ kết quả Bảng~\ref{tab:tanso}, cơ cấu mẫu bộc lộ ba đặc điểm phân bố đáng chú ý:
-\begin{itemize}
-  \item \textbf{Sự mất cân bằng cỡ mẫu của biến mfr:} Mẫu bị chi phối bởi Kelloggs và General
-  Mills, gộp chung gần 60\% tổng số sản phẩm (59,21\%). Ngược lại, các hãng còn lại có quy mô
-  mẫu khá nhỏ, đặc biệt là Nabisco chỉ có 6 sản phẩm. Sự chênh lệch cỡ mẫu này đòi hỏi phải
-  kiểm tra chặt chẽ tính đồng nhất phương sai, và kết quả ở các nhóm nhỏ cần được diễn giải
-  thận trọng.
-  \item \textbf{Sự tập trung trưng bày tại vị trí kệ cao:} Kệ 3 (Cao) là nhóm áp đảo với 36 sản
-  phẩm (chiếm 47,37\%), gần gấp đôi quy mô của Kệ 1 (Thấp) và Kệ 2 (Vừa).
-  \item \textbf{Sự co cụm mạnh của vitamins:} Có tới 62/76 sản phẩm được bổ sung vi chất ở mức
-  tiêu chuẩn (25\%) nhu cầu khuyến nghị hằng ngày, trong khi nhóm không bổ sung (0\%) và nhóm
-  tăng cường tối đa (100\%) chỉ chiếm tỷ trọng nhỏ.
-\end{itemize}
+Từ kết quả Bảng~\ref{tab:tanso}, cơ cấu mẫu bộc lộ ba đặc điểm phân bố đáng chú ý.
+
+\textbf{Sự mất cân bằng cỡ mẫu của biến mfr:} Mẫu bị chi phối bởi Kelloggs và General
+Mills, gộp chung gần 60\% tổng số sản phẩm (59,21\%). Ngược lại, các hãng còn lại có quy mô
+mẫu khá nhỏ, đặc biệt là Nabisco chỉ có 6 sản phẩm. Sự chênh lệch cỡ mẫu này đòi hỏi phải
+kiểm tra chặt chẽ tính đồng nhất phương sai, và kết quả ở các nhóm nhỏ cần được diễn giải
+thận trọng.
+
+\textbf{Sự tập trung trưng bày tại vị trí kệ cao:} Kệ 3 (Cao) là nhóm áp đảo với 36 sản
+phẩm (chiếm 47,37\%), gần gấp đôi quy mô của Kệ 1 (Thấp) và Kệ 2 (Vừa).
+
+\textbf{Sự co cụm mạnh của vitamins:} Có tới 62/76 sản phẩm được bổ sung vi chất ở mức
+tiêu chuẩn (25\%) nhu cầu khuyến nghị hằng ngày, trong khi nhóm không bổ sung (0\%) và nhóm
+tăng cường tối đa (100\%) chỉ chiếm tỷ trọng nhỏ.
 
 \subsubsection{Thống kê mô tả các biến định lượng}
 
@@ -1080,23 +1072,24 @@ vitamins    & 76 & 28,29  & 22,49 & 0,00  & 25,00  & 25,00  & 25,00  & 100,00 & 
 \end{table}
 
 Căn cứ vào hệ số bất đối xứng $G_1$ theo quy ước ở mục 3.1.2 và sự chênh lệch giữa trung bình
-($\xbar$) với trung vị ($\xmed$), 11 biến định lượng được phân thành 3 nhóm hình dạng phân phối:
-\begin{itemize}
-  \item \textbf{Nhóm lệch mạnh ($|G_1| > 1$):} Lệch phải gồm fiber (2,72), vitamins (2,44),
-  potass (1,66), fat (1,33) và protein (1,03); phần lớn sản phẩm tập trung ở vùng giá trị thấp,
-  trong khi một số ít ngũ cốc chuyên biệt kéo dài đuôi phân phối về phía bên phải. Riêng
-  \texttt{total\_carbs} lệch trái mạnh ($G_1 = -1{,}13$): phần lõi phân phối ổn định
-  ($IQR = 4{,}45$ g quanh trung vị $\xmed = 21{,}00$ g) nhưng có đuôi trái do các dòng ngũ cốc
-  cám ít tinh bột.
-  \item \textbf{Nhóm lệch vừa ($0{,}5 \le |G_1| \le 1$):} Biến phụ thuộc \texttt{rating} lệch
-  phải vừa ($G_1 = 0{,}94$; $\xbar = 42{,}51 > \xmed = 40{,}25$ điểm; khoảng biến thiên rộng từ
-  18,04 đến 93,70 điểm).
-  \item \textbf{Nhóm tương đối đối xứng ($|G_1| < 0{,}5$):} Gồm sugars (0,08), carbo (0,35),
-  calories ($-0{,}22$) và sodium ($-0{,}41$). Hàm lượng đường và tinh bột phân bố khá cân đối
-  quanh tâm. Calories có hệ số bất đối xứng nhỏ nhưng co cụm rất chặt quanh vùng
-  100 -- 110 kcal/oz ($IQR = 10{,}00$ kcal) và có ngoại lai ở cả hai phía; sodium hơi lệch trái
-  nhẹ do nhóm sản phẩm không thêm muối (0 mg).
-\end{itemize}
+($\xbar$) với trung vị ($\xmed$), 11 biến định lượng được phân thành 3 nhóm hình dạng phân phối.
+
+\textbf{Nhóm lệch mạnh ($|G_1| > 1$):} Lệch phải gồm fiber (2,72), vitamins (2,44),
+potass (1,66), fat (1,33) và protein (1,03); phần lớn sản phẩm tập trung ở vùng giá trị thấp,
+trong khi một số ít ngũ cốc chuyên biệt kéo dài đuôi phân phối về phía bên phải. Riêng
+\texttt{total\_carbs} lệch trái mạnh ($G_1 = -1{,}13$): phần lõi phân phối ổn định
+($IQR = 4{,}45$ g quanh trung vị $\xmed = 21{,}00$ g) nhưng có đuôi trái do các dòng ngũ cốc
+cám ít tinh bột.
+
+\textbf{Nhóm lệch vừa ($0{,}5 \le |G_1| \le 1$):} Biến phụ thuộc \texttt{rating} lệch
+phải vừa ($G_1 = 0{,}94$; $\xbar = 42{,}51 > \xmed = 40{,}25$ điểm; khoảng biến thiên rộng từ
+18,04 đến 93,70 điểm).
+
+\textbf{Nhóm tương đối đối xứng ($|G_1| < 0{,}5$):} Gồm sugars (0,08), carbo (0,35),
+calories ($-0{,}22$) và sodium ($-0{,}41$). Hàm lượng đường và tinh bột phân bố khá cân đối
+quanh tâm. Calories có hệ số bất đối xứng nhỏ nhưng co cụm rất chặt quanh vùng
+100 -- 110 kcal/oz ($IQR = 10{,}00$ kcal) và có ngoại lai ở cả hai phía; sodium hơi lệch trái
+nhẹ do nhóm sản phẩm không thêm muối (0 mg).
 
 \subsubsection{Phát hiện và biện luận giá trị ngoại lai theo hàng rào Tukey}
 
@@ -1136,23 +1129,24 @@ vitamins & 25,00 & 25,00 & 14 & 0,00 (8 sản phẩm mức 0\%); 100,00 (6 sản
 \end{tabular}
 \end{table}
 
-Nhận định và phương án xử lý ngoại lai:
-\begin{itemize}
-  \item \textbf{Cụm ngũ cốc giàu cám lúa mì:} Các ngoại lai trên của fiber, potass, rating cùng
-  các ngoại lai dưới của calories và total\_carbs đều rơi đồng thời vào đúng 3 sản phẩm chuyên
-  biệt (All-Bran with Extra Fiber, All-Bran, 100\% Bran). Đây là đặc tính dinh dưỡng thực tế
-  của dòng sản phẩm giàu chất xơ -- ít năng lượng, không phải sai số đo lường.
-  \item \textbf{Các ngoại lai đặc thù sản phẩm khác:} 8 ngoại lai dưới ở sodium (0,00 mg) đại
-  diện cho các dòng ngũ cốc nguyên hạt không thêm muối (như Shredded Wheat, Puffed Rice, Quaker
-  Oatmeal), còn 14 điểm ngoại lai ở vitamins phát sinh do $IQR = Q_3 - Q_1 = 25 - 25 = 0$ khi
-  81,58\% mẫu tập trung tại mức 25\%; đây là hệ quả của biến rời rạc, không phải giá trị bất
-  thường.
-  \item \textbf{Phương án xử lý:} Toàn bộ các điểm ngoại lai đều phản ánh đúng bản chất đa
-  dạng của sản phẩm thương mại. Do đó, nhóm quyết định giữ nguyên toàn bộ $N = 76$ quan sát,
-  đồng thời ưu tiên các thước đo vững (Median, IQR, hệ số Spearman) và các kiểm định phi tham số
-  khi cần thiết. Ảnh hưởng của cụm 3 sản phẩm cám lên hệ số tương quan được đánh giá cụ thể ở
-  mục~\ref{sec:tuongquan}.
-\end{itemize}
+Từ Bảng~\ref{tab:ngoailai}, nhóm rút ra các nhận định và phương án xử lý ngoại lai như sau.
+
+\textbf{Cụm ngũ cốc giàu cám lúa mì:} Các ngoại lai trên của fiber, potass, rating cùng
+các ngoại lai dưới của calories và total\_carbs đều rơi đồng thời vào đúng 3 sản phẩm chuyên
+biệt (All-Bran with Extra Fiber, All-Bran, 100\% Bran). Đây là đặc tính dinh dưỡng thực tế
+của dòng sản phẩm giàu chất xơ -- ít năng lượng, không phải sai số đo lường.
+
+\textbf{Các ngoại lai đặc thù sản phẩm khác:} 8 ngoại lai dưới ở sodium (0,00 mg) đại
+diện cho các dòng ngũ cốc nguyên hạt không thêm muối (như Shredded Wheat, Puffed Rice, Quaker
+Oatmeal), còn 14 điểm ngoại lai ở vitamins phát sinh do $IQR = Q_3 - Q_1 = 25 - 25 = 0$ khi
+81,58\% mẫu tập trung tại mức 25\%; đây là hệ quả của biến rời rạc, không phải giá trị bất
+thường.
+
+\textbf{Phương án xử lý:} Toàn bộ các điểm ngoại lai đều phản ánh đúng bản chất đa
+dạng của sản phẩm thương mại. Do đó, nhóm quyết định giữ nguyên toàn bộ $N = 76$ quan sát,
+đồng thời ưu tiên các thước đo vững (Median, IQR, hệ số Spearman) và các kiểm định phi tham số
+khi cần thiết. Ảnh hưởng của cụm 3 sản phẩm cám lên hệ số tương quan được đánh giá cụ thể ở
+mục~\ref{sec:tuongquan}.
 
 \subsection{Mô tả dữ liệu bằng đồ thị}
 
@@ -1167,21 +1161,18 @@ Nhận định và phương án xử lý ngoại lai:
 \end{figure}
 
 Đối chiếu trực quan trên Hình~\ref{fig:hist} cho thấy sự tương đồng với các chỉ số tại
-Bảng~\ref{tab:dinhluong}:
-\begin{itemize}
-  \item Các biến fiber, potass, protein và biến phụ thuộc rating có đỉnh phân phối lệch hẳn về
-  bên trái, đường trung bình (nét đứt đỏ) nằm bên phải đường trung vị (nét liền xanh) và kéo
-  đuôi dài về phía giá trị cao. Biến fat cũng lệch phải ($G_1 = 1{,}33$) nhưng là ngoại lệ về vị
-  trí hai đường tham chiếu: trung bình $\xbar = 0{,}97$ nhỏ hơn trung vị $\xmed = 1{,}00$, do
-  có nhiều sản phẩm 0 g chất béo kéo trung bình xuống.
-  \item Ngược lại, sugars và carbo có dạng phân phối trải đều và cân xứng hơn quanh hai đường
-  tham chiếu trung tâm, còn calories và total\_carbs tập trung dày đặc quanh vùng đỉnh
-  100 -- 110 kcal và 20 -- 24 g.
-  \item Hình dạng lệch của nhiều biến gợi ý rằng giả định phân phối chuẩn có thể không thỏa.
-  Tuy nhiên, với ANOVA, giả định chuẩn áp dụng cho rating \emph{trong từng nhóm} (hoặc phần dư),
-  nên kết luận chỉ được rút ra sau khi kiểm định Shapiro-Wilk theo từng nhóm ở phần suy diễn;
-  histogram của toàn mẫu chỉ mang tính gợi ý.
-\end{itemize}
+Bảng~\ref{tab:dinhluong}. Các biến fiber, potass, protein và biến phụ thuộc rating có đỉnh phân phối lệch hẳn về
+bên trái, đường trung bình (nét đứt đỏ) nằm bên phải đường trung vị (nét liền xanh) và kéo
+đuôi dài về phía giá trị cao. Biến fat cũng lệch phải ($G_1 = 1{,}33$) nhưng là ngoại lệ về vị
+trí hai đường tham chiếu: trung bình $\xbar = 0{,}97$ nhỏ hơn trung vị $\xmed = 1{,}00$, do
+có nhiều sản phẩm 0 g chất béo kéo trung bình xuống.
+Ngược lại, sugars và carbo có dạng phân phối trải đều và cân xứng hơn quanh hai đường
+tham chiếu trung tâm, còn calories và total\_carbs tập trung dày đặc quanh vùng đỉnh
+100 -- 110 kcal và 20 -- 24 g.
+Hình dạng lệch của nhiều biến gợi ý rằng giả định phân phối chuẩn có thể không thỏa.
+Tuy nhiên, với ANOVA, giả định chuẩn áp dụng cho rating \emph{trong từng nhóm} (hoặc phần dư),
+nên kết luận chỉ được rút ra sau khi kiểm định Shapiro-Wilk theo từng nhóm ở phần suy diễn;
+histogram của toàn mẫu chỉ mang tính gợi ý.
 
 \subsubsection{Biểu đồ hộp đơn biến (Boxplot)}
 
@@ -1193,14 +1184,11 @@ Bảng~\ref{tab:dinhluong}:
 \end{figure}
 
 Biểu đồ hộp nằm ngang ở Hình~\ref{fig:box} xác nhận trực quan vị trí và mật độ các điểm dị
-biệt (tô đỏ) khớp với kết quả tính toán tại Bảng~\ref{tab:ngoailai}:
-\begin{itemize}
-  \item Các biến fiber, potass, protein, fat và rating chỉ xuất hiện ngoại lai phía trên râu
-  phải (phản ánh nhóm sản phẩm giàu dưỡng chất), trong khi total\_carbs có ngoại lai ở đầu trái
-  và carbo có ngoại lai ở đầu phải.
-  \item Các biến calories, sodium và vitamins có ngoại lai ở cả hai phía; riêng sugars có hộp tứ
-  phân vị cân đối và hoàn toàn không có điểm nào vượt khỏi hai đầu râu Tukey.
-\end{itemize}
+biệt (tô đỏ) khớp với kết quả tính toán tại Bảng~\ref{tab:ngoailai}. Các biến fiber, potass, protein, fat và rating chỉ xuất hiện ngoại lai phía trên râu
+phải (phản ánh nhóm sản phẩm giàu dưỡng chất), trong khi total\_carbs có ngoại lai ở đầu trái
+và carbo có ngoại lai ở đầu phải.
+Các biến calories, sodium và vitamins có ngoại lai ở cả hai phía; riêng sugars có hộp tứ
+phân vị cân đối và hoàn toàn không có điểm nào vượt khỏi hai đầu râu Tukey.
 
 \subsubsection{Biểu đồ hộp phân nhóm (Grouped Boxplot) theo mfr và shelf}
 
@@ -1252,22 +1240,22 @@ Kệ 3 (Cao)  & 36 & 5,83 & 6,00  & 2,94 \\
 \end{table}
 
 Quan sát Bảng~\ref{tab:nhom}, Bảng~\ref{tab:duongke} và Hình~\ref{fig:group}(a), (b) rút ra hai
-nhận định trọng tâm (mới ở mức mô tả, chưa qua kiểm định):
-\begin{itemize}
-  \item \textbf{Chênh lệch rõ rệt theo biến mfr:} Toàn bộ hộp tứ phân vị của Nabisco nằm tách
-  biệt ở vùng điểm cao ($\xbar = 67{,}97$; $\xmed = 68{,}32$) với độ phân tán rất hẹp
-  ($SD = 5{,}51$; $IQR = 6{,}24$), cao gần gấp đôi so với General Mills ở vị trí thấp nhất
-  ($\xbar = 34{,}49$; $\xmed = 36{,}18$). Lưu ý Nabisco chỉ có $n = 6$. Nhóm Kelloggs có trung
-  bình bị kéo lên cao hơn trung vị ($44{,}04$ so với $40{,}56$) do điểm ngoại lai đỏ tại 93,70
-  điểm, trong khi Quaker Oats có độ biến động nội bộ lớn nhất ($SD = 16{,}80$; $IQR = 22{,}35$).
-  \item \textbf{Sự phân hóa theo Vị trí kệ (shelf):} Sản phẩm đặt tại Kệ 2 (Vừa) có rating
-  thấp hơn ($\xbar = 33{,}98$) so với Kệ 1 (Thấp, $\xbar = 46{,}15$) và Kệ 3 (Cao,
-  $\xbar = 45{,}22$). Bảng~\ref{tab:duongke} cho thấy Kệ 2 cũng là nơi trưng bày nhiều ngũ cốc
-  nhiều đường nhất (đường trung bình 9,80 g/oz so với 5,20 và 5,83 g/oz ở kệ 1 và kệ 3) và ít
-  chất xơ nhất. Khác biệt này có ý nghĩa thống kê hay không sẽ do ANOVA/Kruskal-Wallis kết
-  luận; theo mục~\ref{sec:rating}, nếu có, nó phản ánh thành phần dinh dưỡng của các sản phẩm
-  trên từng kệ.
-\end{itemize}
+nhận định trọng tâm (mới ở mức mô tả, chưa qua kiểm định).
+
+\textbf{Chênh lệch rõ rệt theo biến mfr:} Toàn bộ hộp tứ phân vị của Nabisco nằm tách
+biệt ở vùng điểm cao ($\xbar = 67{,}97$; $\xmed = 68{,}32$) với độ phân tán rất hẹp
+($SD = 5{,}51$; $IQR = 6{,}24$), cao gần gấp đôi so với General Mills ở vị trí thấp nhất
+($\xbar = 34{,}49$; $\xmed = 36{,}18$). Lưu ý Nabisco chỉ có $n = 6$. Nhóm Kelloggs có trung
+bình bị kéo lên cao hơn trung vị ($44{,}04$ so với $40{,}56$) do điểm ngoại lai đỏ tại 93,70
+điểm, trong khi Quaker Oats có độ biến động nội bộ lớn nhất ($SD = 16{,}80$; $IQR = 22{,}35$).
+
+\textbf{Sự phân hóa theo Vị trí kệ (shelf):} Sản phẩm đặt tại Kệ 2 (Vừa) có rating
+thấp hơn ($\xbar = 33{,}98$) so với Kệ 1 (Thấp, $\xbar = 46{,}15$) và Kệ 3 (Cao,
+$\xbar = 45{,}22$). Bảng~\ref{tab:duongke} cho thấy Kệ 2 cũng là nơi trưng bày nhiều ngũ cốc
+nhiều đường nhất (đường trung bình 9,80 g/oz so với 5,20 và 5,83 g/oz ở kệ 1 và kệ 3) và ít
+chất xơ nhất. Khác biệt này có ý nghĩa thống kê hay không sẽ do ANOVA/Kruskal-Wallis kết
+luận; theo mục~\ref{sec:rating}, nếu có, nó phản ánh thành phần dinh dưỡng của các sản phẩm
+trên từng kệ.
 
 \subsubsection{Ma trận tương quan và Biểu đồ phân tán tiêu biểu}
 \label{sec:tuongquan}
@@ -1307,33 +1295,328 @@ fiber        & $0{,}660$  & $0{,}584$  & $0{,}518$ \\
 
 Từ Hình~\ref{fig:corr}(a), (b) và Bảng~\ref{tab:pearsonspearman}, mối liên hệ giữa điểm đánh
 giá rating và các thành phần dinh dưỡng thể hiện hai chiều hướng đối lập rõ rệt (phân mức theo
-quy ước ở mục 3.5.1):
-\begin{itemize}
-  \item \textbf{Nhóm tương quan nghịch:} Chỉ có hàm lượng đường sugars đạt mức tương quan âm
-  \emph{mạnh} ($r = -0{,}765$; Spearman $-0{,}823$) và ổn định khi bỏ 3 sản phẩm cám. Năng
-  lượng calories ($r = -0{,}648$) và total\_carbs ($-0{,}585$) ở mức \emph{trung bình}; fat,
-  sodium và vitamins tương quan âm yếu. Trên Hình~\ref{fig:corr}(b), các điểm quan sát bám khá
-  sát đường hồi quy dốc xuống, cho thấy sản phẩm càng nhiều đường và năng lượng thì rating càng
-  thấp.
-  \item \textbf{Nhóm tương quan thuận:} Chất xơ fiber ($r = 0{,}660$), chất đạm protein
-  ($0{,}574$) và kali potass ($0{,}524$) có tương quan dương ở mức \emph{trung bình} với rating;
-  carbo tương quan thuận yếu.
-  \item \textbf{Ảnh hưởng của cụm sản phẩm cám:} Tương quan của fiber, potass và calories với
-  rating giảm rõ khi bỏ 3 sản phẩm cám (potass từ 0,524 xuống 0,325; fiber từ 0,660 xuống
-  0,518), và hệ số Spearman của các biến này cũng thấp hơn Pearson. Như vậy một phần độ lớn
-  của các hệ số Pearson này đến từ 3 sản phẩm cám, trong khi tương quan của sugars vẫn mạnh
-  theo cả ba cách tính.
-  \item \textbf{Chiều tương quan không phải chiều tác động:} potass tương quan thuận với rating,
-  nhưng trong công thức tính rating (mục~\ref{sec:rating}) hệ số của potass lại âm
-  ($-0{,}034$), vì potass luôn đi kèm fiber. Do đó ``kali tương quan thuận với rating'' là mô
-  tả đúng, nhưng không được diễn giải thành ``kali làm tăng rating'' ở phần hồi quy.
-  \item \textbf{Nguy cơ đa cộng tuyến:} Ma trận tương quan Hình~\ref{fig:corr}(a) ghi nhận cặp
-  fiber -- potass có hệ số tương quan rất mạnh ($r = 0{,}923$; Spearman 0,879; vẫn 0,876 khi bỏ
-  3 sản phẩm cám), cùng các cặp total\_carbs -- fiber ($-0{,}838$) và total\_carbs -- potass
-  ($-0{,}804$). Tính trên 9 biến dinh dưỡng (dữ liệu 1 oz), VIF của carbo (13,5), sugars (11,7)
-  và fiber (10,5) đã vượt ngưỡng 10, potass (8,9) và calories (7,1) vượt ngưỡng 5. Đa cộng tuyến
-  vì vậy ở mức nặng và cần được xử lý (bỏ bớt hoặc gộp biến) trước khi chốt mô hình hồi quy.
-\end{itemize}
+quy ước ở mục 3.5.1).
+
+\textbf{Nhóm tương quan nghịch:} Chỉ có hàm lượng đường sugars đạt mức tương quan âm
+\emph{mạnh} ($r = -0{,}765$; Spearman $-0{,}823$) và ổn định khi bỏ 3 sản phẩm cám. Năng
+lượng calories ($r = -0{,}648$) và total\_carbs ($-0{,}585$) ở mức \emph{trung bình}; fat,
+sodium và vitamins tương quan âm yếu. Trên Hình~\ref{fig:corr}(b), các điểm quan sát bám khá
+sát đường hồi quy dốc xuống, cho thấy sản phẩm càng nhiều đường và năng lượng thì rating càng
+thấp.
+
+\textbf{Nhóm tương quan thuận:} Chất xơ fiber ($r = 0{,}660$), chất đạm protein
+($0{,}574$) và kali potass ($0{,}524$) có tương quan dương ở mức \emph{trung bình} với rating;
+carbo tương quan thuận yếu.
+
+\textbf{Ảnh hưởng của cụm sản phẩm cám:} Tương quan của fiber, potass và calories với
+rating giảm rõ khi bỏ 3 sản phẩm cám (potass từ 0,524 xuống 0,325; fiber từ 0,660 xuống
+0,518), và hệ số Spearman của các biến này cũng thấp hơn Pearson. Như vậy một phần độ lớn
+của các hệ số Pearson này đến từ 3 sản phẩm cám, trong khi tương quan của sugars vẫn mạnh
+theo cả ba cách tính.
+
+\textbf{Chiều tương quan không phải chiều tác động:} potass tương quan thuận với rating,
+nhưng trong công thức tính rating (mục~\ref{sec:rating}) hệ số của potass lại âm
+($-0{,}034$), vì potass luôn đi kèm fiber. Do đó ``kali tương quan thuận với rating'' là mô
+tả đúng, nhưng không được diễn giải thành ``kali làm tăng rating'' ở phần hồi quy.
+
+\textbf{Nguy cơ đa cộng tuyến:} Ma trận tương quan Hình~\ref{fig:corr}(a) ghi nhận cặp
+fiber -- potass có hệ số tương quan rất mạnh ($r = 0{,}923$; Spearman 0,879; vẫn 0,876 khi bỏ
+3 sản phẩm cám), cùng các cặp total\_carbs -- fiber ($-0{,}838$) và total\_carbs -- potass
+($-0{,}804$). Tính trên 9 biến dinh dưỡng (dữ liệu 1 oz), VIF của carbo (13,5), sugars (11,7)
+và fiber (10,5) đã vượt ngưỡng 10, potass (8,9) và calories (7,1) vượt ngưỡng 5. Đa cộng tuyến
+vì vậy ở mức nặng và cần được xử lý (bỏ bớt hoặc gộp biến) trước khi chốt mô hình hồi quy.
+
+% =====================================================================
+\section{THỐNG KÊ SUY DIỄN}
+\label{sec:suydien}
+% =====================================================================
+% Mục 6.1 và 6.2 (kiểm định một mẫu, hai mẫu) do thành viên khác phụ trách,
+% sẽ được chèn vào trước mục này. Bộ đếm được đặt để mục dưới đây là 6.3.
+\setcounter{subsection}{2}
+
+\subsection{Phân tích phương sai một yếu tố (One-way ANOVA)}
+\label{sec:anova}
+
+\subsubsection{Mục tiêu}
+
+\textbf{Biến phụ thuộc và yếu tố phân nhóm:} Biến phụ thuộc là điểm đánh giá
+\texttt{rating}. Hai yếu tố phân nhóm được phân tích riêng rẽ: Nhà sản xuất \texttt{mfr}
+($k = 6$, cỡ nhóm từ 6 đến 23) và Vị trí kệ \texttt{shelf} ($k = 3$, cỡ nhóm 20, 20, 36). Để
+tìm nguyên nhân dinh dưỡng đứng sau, nhóm lặp lại cùng quy trình cho hàm lượng đường
+\texttt{sugars} (g/oz), biến có tương quan mạnh nhất với rating ở Bảng~\ref{tab:pearsonspearman}.
+
+\textbf{Mô hình (mục 3.4.1):} $Y_{ij} = \mu + \tau_i + \varepsilon_{ij}$, trong đó
+$Y_{ij}$ là rating của sản phẩm thứ $j$ thuộc nhóm $i$, $\tau_i$ là hiệu ứng của nhóm $i$.
+
+\textbf{Cặp giả thuyết (với mức ý nghĩa $\alpha = 0{,}05$):}
+\begin{equation}
+\begin{cases}
+H_0: \mu_1 = \mu_2 = \dots = \mu_k\\
+H_1: \text{Tồn tại ít nhất một cặp nhóm có trung bình khác nhau}
+\end{cases}
+\end{equation}
+Với Kruskal-Wallis, $H_0$ được phát biểu là phân phối rating (hay hạng trung bình) như nhau
+giữa các nhóm.
+
+\textbf{So với Mục 6.2:} So sánh từng cặp cho 6 hãng cần tới 15 kiểm định $t$ riêng lẻ,
+làm tăng xác suất kết luận sai. ANOVA kiểm định tất cả các nhóm trong một lần, sau đó các
+kiểm định hậu nghiệm (Tukey HSD, Dunn) chỉ ra cặp khác biệt mà vẫn kiểm soát sai lầm loại I
+toàn họ.
+
+\subsubsection{Kết quả}
+
+\textbf{Bước 1 -- Kiểm tra giả định (mục 3.4.2 -- 3.4.3).} Kết quả Shapiro-Wilk trên từng nhóm
+được trình bày ở Bảng~\ref{tab:shapiro}, kiểm định Levene (biến thể Brown-Forsythe) ở
+Bảng~\ref{tab:levene}.
+
+\begin{table}[H]
+\centering
+\caption{Kiểm định Shapiro-Wilk cho rating trong từng nhóm}
+\label{tab:shapiro}
+\begin{tabular}{l l c c c}
+\toprule
+Yếu tố & Nhóm & $n_i$ & $W$ & $p$-value \\
+\midrule
+\multirow{6}{*}{mfr}
+  & General Mills  & 22 & 0,9569 & 0,4291 \\
+  & Kelloggs       & 23 & 0,8046 & $4{,}55\cdot10^{-4}$ \\
+  & Nabisco        & 6  & 0,9568 & 0,7949 \\
+  & Post           & 9  & 0,9013 & 0,2596 \\
+  & Quaker Oats    & 8  & 0,9227 & 0,4523 \\
+  & Ralston Purina & 8  & 0,9186 & 0,4186 \\
+\midrule
+\multirow{3}{*}{shelf}
+  & Kệ 1 (Thấp) & 20 & 0,9116 & 0,0682 \\
+  & Kệ 2 (Vừa)  & 20 & 0,8752 & 0,0145 \\
+  & Kệ 3 (Cao)  & 36 & 0,8588 & $3{,}05\cdot10^{-4}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Kiểm định Levene (Brown-Forsythe) về tính đồng nhất phương sai}
+\label{tab:levene}
+\begin{tabular}{l c c c c}
+\toprule
+Bài toán & $W$ & $df_1$ & $df_2$ & $p$-value \\
+\midrule
+rating theo mfr   & 1,426 & 5 & 70 & 0,2257 \\
+rating theo shelf & 0,170 & 2 & 73 & 0,8441 \\
+sugars theo mfr   & 0,513 & 5 & 70 & 0,7654 \\
+sugars theo shelf & 1,133 & 2 & 73 & 0,3277 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Phân phối chuẩn:} Giả định chuẩn bị vi phạm ở Kelloggs ($p < 0{,}001$), Kệ 2
+($p = 0{,}0145$) và Kệ 3 ($p < 0{,}001$). Đây đều là các nhóm chứa sản phẩm cám có rating rất
+cao (All-Bran with Extra Fiber 93,70 điểm thuộc Kelloggs, kệ 3). Nabisco có $p = 0{,}7949$
+nhưng chỉ có $n = 6$, nên kết quả này không đủ để khẳng định nhóm có phân phối chuẩn.
+
+\textbf{Đồng nhất phương sai:} Cả bốn bài toán đều có $p$-value của Levene lớn hơn 0,05,
+chưa có cơ sở bác bỏ giả thuyết phương sai bằng nhau.
+
+\textbf{Hướng xử lý:} Do giả định chuẩn bị vi phạm ở một số nhóm và cỡ nhóm mất cân bằng
+(6 đến 36), nhóm báo cáo song song ba kiểm định: ANOVA cổ điển, Welch's ANOVA (không cần
+phương sai bằng nhau) và Kruskal-Wallis (không cần phân phối chuẩn). Kết luận chỉ được đưa ra
+khi các kiểm định thống nhất; khi chúng khác nhau, nhóm ưu tiên Kruskal-Wallis và Dunn.
+
+\textbf{Bước 2 -- Kiểm định chính (mục 3.4.4, 3.4.6).} Bảng~\ref{tab:anova_rating} trình bày
+bảng ANOVA theo đúng cấu trúc Bảng~\ref{tab:anova}. Ngoài các đại lượng chuẩn, nhóm báo cáo thêm
+tỷ lệ biến thiên do yếu tố nhóm $\eta^2 = SSB/SST$ để đo độ lớn của khác biệt.
+
+\begin{table}[H]
+\centering
+\caption{Bảng phân tích phương sai một yếu tố cho rating}
+\label{tab:anova_rating}
+\begin{tabular}{l l r r r r c}
+\toprule
+Yếu tố & Nguồn biến thiên & SS & df & MS & $F$ & $p$-value \\
+\midrule
+\multirow{3}{*}{\makecell[l]{mfr\\($\eta^2 = 0{,}362$)}}
+  & Giữa các nhóm & 5\,373,70  & 5  & 1\,074,74 & 7,942 & $5{,}68\cdot10^{-6}$ \\
+  & Nội bộ nhóm   & 9\,472,67  & 70 & 135,32    &       & \\
+  & Toàn phần     & 14\,846,37 & 75 &           &       & \\
+\midrule
+\multirow{3}{*}{\makecell[l]{shelf\\($\eta^2 = 0{,}134$)}}
+  & Giữa các nhóm & 1\,984,31  & 2  & 992,15 & 5,631 & 0,0053 \\
+  & Nội bộ nhóm   & 12\,862,06 & 73 & 176,19 &       & \\
+  & Toàn phần     & 14\,846,37 & 75 &        &       & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Bảng~\ref{tab:omnibus} tổng hợp ba kiểm định tổng thể cho cả bốn bài toán. Vì nhóm thực hiện 4
+kiểm định Kruskal-Wallis cùng lúc, cột cuối hiệu chỉnh $p$-value theo phương pháp Holm
+(mục 3.2.1).
+
+\begin{table}[H]
+\centering
+\caption{Kiểm định tổng thể: ANOVA cổ điển, Welch's ANOVA và Kruskal-Wallis ($N = 76$)}
+\label{tab:omnibus}
+\small
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{l c c c c c c c c c}
+\toprule
+ & \multicolumn{2}{c}{ANOVA} & \multicolumn{3}{c}{Welch's ANOVA} & \multicolumn{4}{c}{Kruskal-Wallis} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-6}\cmidrule(lr){7-10}
+Bài toán & $F$ & $p$ & $F$ & $df_2$ & $p$ & $H_c$ & $df$ & $p$ & $p$ (Holm) \\
+\midrule
+rating theo mfr   & 7,942 & $5{,}68\cdot10^{-6}$ & 24,806 & 23,29 & $1{,}29\cdot10^{-8}$ & 22,20 & 5 & $4{,}80\cdot10^{-4}$ & 0,0014 \\
+rating theo shelf & 5,631 & 0,0053 & 5,388 & 40,33 & 0,0084 & 13,32 & 2 & 0,0013 & 0,0026 \\
+sugars theo mfr   & 2,425 & 0,0437 & 3,507 & 21,99 & 0,0176 & 10,60 & 5 & 0,0599 & 0,0599 \\
+sugars theo shelf & 9,878 & $1{,}60\cdot10^{-4}$ & 8,709 & 36,25 & $8{,}15\cdot10^{-4}$ & 15,94 & 2 & $3{,}45\cdot10^{-4}$ & 0,0014 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Bước 3 -- Phân tích hậu nghiệm (mục 3.4.5 -- 3.4.6).} Vì các kiểm định tổng thể cho
+rating đều bác bỏ $H_0$, nhóm so sánh từng cặp bằng Tukey HSD (khoảng tin cậy 95\% đồng thời) và
+Dunn's test (hiệu chỉnh Bonferroni) trong Bảng~\ref{tab:posthoc}; khoảng tin cậy Tukey được biểu
+diễn trên Hình~\ref{fig:tukey}.
+
+\begin{table}[H]
+\centering
+\caption{So sánh bội hậu nghiệm cho rating: Tukey HSD và Dunn's test (Bonferroni)}
+\label{tab:posthoc}
+\small
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{l l r c c r c}
+\toprule
+ & & \multicolumn{3}{c}{Tukey HSD} & \multicolumn{2}{c}{Dunn (Bonferroni)} \\
+\cmidrule(lr){3-5}\cmidrule(lr){6-7}
+Yếu tố & Cặp so sánh & Chênh lệch & KTC 95\% & $p_{\text{adj}}$ & $z$ & $p_{\text{adj}}$ \\
+\midrule
+\multirow{15}{*}{mfr}
+ & Kelloggs -- General Mills       & 9,55   & [$-0{,}61$; 19,72]   & 0,0775 & 2,376  & 0,2624 \\
+ & Nabisco -- General Mills        & 33,48  & [17,78; 49,18]       & $4{,}18\cdot10^{-7}$ & 4,596 & $6{,}47\cdot10^{-5}$ \\
+ & Post -- General Mills           & 7,22   & [$-6{,}27$; 20,71]   & 0,6217 & 1,630  & 1,0000 \\
+ & Quaker Oats -- General Mills    & 8,43   & [$-5{,}64$; 22,50]   & 0,5009 & 1,718  & 1,0000 \\
+ & Ralston Purina -- General Mills & 7,06   & [$-7{,}02$; 21,13]   & 0,6846 & 1,718  & 1,0000 \\
+ & Nabisco -- Kelloggs             & 23,93  & [8,30; 39,56]        & $3{,}85\cdot10^{-4}$ & 3,072 & 0,0319 \\
+ & Post -- Kelloggs                & $-2{,}33$  & [$-15{,}73$; 11,07]  & 0,9956 & $-0{,}162$ & 1,0000 \\
+ & Quaker Oats -- Kelloggs         & $-1{,}12$  & [$-15{,}11$; 12,87]  & 0,9999 & 0,001  & 1,0000 \\
+ & Ralston Purina -- Kelloggs      & $-2{,}50$  & [$-16{,}49$; 11,50]  & 0,9951 & 0,001  & 1,0000 \\
+ & Post -- Nabisco                 & $-26{,}26$ & [$-44{,}23$; $-8{,}30$] & $7{,}91\cdot10^{-4}$ & $-2{,}792$ & 0,0785 \\
+ & Quaker Oats -- Nabisco          & $-25{,}05$ & [$-43{,}46$; $-6{,}64$] & 0,0022 & $-2{,}606$ & 0,1373 \\
+ & Ralston Purina -- Nabisco       & $-26{,}43$ & [$-44{,}83$; $-8{,}02$] & 0,0010 & $-2{,}606$ & 0,1373 \\
+ & Quaker Oats -- Post             & 1,21   & [$-15{,}35$; 17,77]  & 0,9999 & 0,132  & 1,0000 \\
+ & Ralston Purina -- Post          & $-0{,}16$  & [$-16{,}73$; 16,40]  & 1,0000 & 0,132  & 1,0000 \\
+ & Ralston Purina -- Quaker Oats   & $-1{,}37$  & [$-18{,}42$; 15,67]  & 0,9999 & 0,000  & 1,0000 \\
+\midrule
+\multirow{3}{*}{shelf}
+ & Kệ 2 (Vừa) -- Kệ 1 (Thấp) & $-12{,}17$ & [$-22{,}21$; $-2{,}12$] & 0,0136 & $-3{,}115$ & 0,0055 \\
+ & Kệ 3 (Cao) -- Kệ 1 (Thấp) & $-0{,}93$  & [$-9{,}78$; 7,93]        & 0,9662 & $-0{,}198$ & 1,0000 \\
+ & Kệ 3 (Cao) -- Kệ 2 (Vừa)  & 11,24      & [2,38; 20,10]            & 0,0092 & 3,334      & 0,0026 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{Hinh_6_3_Tukey_HSD.png}
+\caption{Khoảng tin cậy 95\% đồng thời Tukey HSD cho chênh lệch rating trung bình giữa các cặp
+nhóm. Màu đỏ: khoảng không chứa 0 ($p_{\text{adj}} < 0{,}05$).}
+\label{fig:tukey}
+\end{figure}
+
+Để tìm nguyên nhân dinh dưỡng, Bảng~\ref{tab:sugars_nhom} so sánh hàm lượng đường giữa các nhóm,
+kèm $p$-value đã hiệu chỉnh của Dunn's test cho các cặp đáng chú ý.
+
+\begin{table}[H]
+\centering
+\caption{Hàm lượng đường sugars (g/oz) theo nhóm và các cặp khác biệt (Dunn, Bonferroni)}
+\label{tab:sugars_nhom}
+\begin{tabular}{l l c r r r}
+\toprule
+Yếu tố & Nhóm & $n_i$ & Mean & SD & Median \\
+\midrule
+\multirow{6}{*}{mfr}
+  & General Mills  & 22 & 7,56 & 3,63 & 8,00 \\
+  & Kelloggs       & 23 & 6,95 & 4,14 & 6,92 \\
+  & Nabisco        & 6  & 1,83 & 2,86 & 0,00 \\
+  & Post           & 9  & 8,17 & 4,17 & 8,00 \\
+  & Quaker Oats    & 8  & 6,25 & 4,43 & 6,50 \\
+  & Ralston Purina & 8  & 6,13 & 3,56 & 5,50 \\
+\midrule
+\multirow{3}{*}{shelf}
+  & Kệ 1 (Thấp) & 20 & 5,20 & 4,38 & 3,00 \\
+  & Kệ 2 (Vừa)  & 20 & 9,80 & 3,92 & 11,50 \\
+  & Kệ 3 (Cao)  & 36 & 5,83 & 3,03 & 6,00 \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.4em}
+\begin{minipage}{0.8\textwidth}\small
+Dunn's test (Bonferroni) cho sugars. Theo kệ: Kệ 2 -- Kệ 1 $p_{\text{adj}} = 9{,}29\cdot10^{-4}$;
+Kệ 3 -- Kệ 2 $p_{\text{adj}} = 0{,}0016$; Kệ 3 -- Kệ 1 $p_{\text{adj}} = 1{,}0000$. Theo hãng:
+Nabisco -- General Mills $p_{\text{adj}} = 0{,}0343$; Nabisco -- Post $0{,}0750$;
+Nabisco -- Kelloggs $0{,}1294$; các cặp còn lại $p_{\text{adj}} > 0{,}6$.
+\end{minipage}
+\end{table}
+
+\subsubsection{Nhận xét}
+
+\textbf{Rating khác biệt theo nhà sản xuất:} Cả ba kiểm định đều bác bỏ $H_0$ ở mức
+0,05: $F = 7{,}942 > F_{0,05;\,5,\,70} = 2{,}35$ ($p = 5{,}68\cdot10^{-6}$), Welch
+$p = 1{,}29\cdot10^{-8}$ và Kruskal-Wallis $H_c = 22{,}20 > \chi^2_{0,05;\,5} = 11{,}07$
+($p$ sau hiệu chỉnh Holm $= 0{,}0014$). Yếu tố hãng giải thích khoảng 36,2\% biến thiên của
+rating ($\eta^2 = 0{,}362$).
+
+\textbf{Nabisco là nguồn gốc của khác biệt:} Theo Tukey HSD, Nabisco có rating trung
+bình cao hơn cả 5 hãng còn lại, chênh từ 23,93 điểm (so với Kelloggs) đến 33,48 điểm (so với
+General Mills), và cả 5 khoảng tin cậy đều không chứa 0. Mọi cặp còn lại giữa 5 hãng không khác
+biệt có ý nghĩa ($p_{\text{adj}} \ge 0{,}077$). Tuy nhiên, Dunn's test (vững hơn khi dữ liệu
+không chuẩn) chỉ xác nhận Nabisco cao hơn General Mills ($p_{\text{adj}} < 0{,}001$) và
+Kelloggs ($p_{\text{adj}} = 0{,}032$); ba cặp với Post, Quaker Oats và Ralston Purina có $p$
+chưa hiệu chỉnh từ 0,005 đến 0,009 nhưng không còn ý nghĩa sau hiệu chỉnh Bonferroni. Lý do là
+Nabisco chỉ có 6 sản phẩm và các hãng kia chỉ 8 -- 9 sản phẩm, nên lực kiểm định thấp. Vì vậy,
+nhận định ``Nabisco tách biệt hoàn toàn khỏi các hãng còn lại'' chỉ được ủng hộ đầy đủ bởi
+Tukey HSD; với cách kiểm định thận trọng hơn, bằng chứng chắc chắn chỉ có cho hai hãng lớn
+nhất là General Mills và Kelloggs.
+
+\textbf{Rating khác biệt theo vị trí kệ:} Cả ba kiểm định đều bác bỏ $H_0$:
+$F = 5{,}631 > F_{0,05;\,2,\,73} = 3{,}12$ ($p = 0{,}0053$), Welch $p = 0{,}0084$, Kruskal-Wallis
+$H_c = 13{,}32 > \chi^2_{0,05;\,2} = 5{,}99$ ($p$ Holm $= 0{,}0026$). Yếu tố kệ giải thích
+13,4\% biến thiên của rating. Cả Tukey HSD và Dunn đều cho cùng kết luận: Kệ 2 (Vừa) thấp hơn
+Kệ 1 khoảng 12,17 điểm (KTC 95\%: 2,12 đến 22,21 điểm) và thấp hơn Kệ 3 khoảng 11,24 điểm
+(KTC 95\%: 2,38 đến 20,10 điểm), còn Kệ 1 và Kệ 3 không khác biệt ($p_{\text{adj}} = 0{,}966$).
+
+\textbf{Nguyên nhân dinh dưỡng -- đường:} Hàm lượng đường khác biệt có ý nghĩa theo kệ
+(Kruskal-Wallis $p$ Holm $= 0{,}0014$): sản phẩm Kệ 2 chứa trung bình 9,80 g/oz (trung vị
+11,50 g/oz), cao hơn có ý nghĩa so với Kệ 1 (5,20 g/oz) và Kệ 3 (5,83 g/oz). Đây đúng là hai
+cặp kệ có rating khác biệt, phù hợp với tương quan âm mạnh giữa sugars và rating
+($r = -0{,}765$). Theo nhà sản xuất, Nabisco có lượng đường thấp nhất (trung bình 1,83 g/oz,
+trung vị 0 g/oz do các dòng lúa mì nguyên hạt không đường), nhưng bằng chứng thống kê yếu hơn:
+ANOVA ($p = 0{,}044$) và Welch ($p = 0{,}018$) bác bỏ $H_0$, còn Kruskal-Wallis thì không
+($p = 0{,}060$). Vì nhóm Nabisco vi phạm giả định chuẩn với sugars (Shapiro-Wilk
+$p = 0{,}0036$), nhóm ưu tiên Kruskal-Wallis và kết luận khác biệt về đường giữa các hãng
+\emph{chưa đủ} ý nghĩa thống kê; riêng cặp Nabisco -- General Mills có ý nghĩa theo Dunn
+($p_{\text{adj}} = 0{,}034$).
+
+\textbf{Cách hiểu đúng kết quả:} Theo mục~\ref{sec:rating}, rating được tính từ thành
+phần dinh dưỡng. Do đó, rating khác biệt giữa các hãng và các kệ không có nghĩa thương hiệu hay
+vị trí kệ trực tiếp làm thay đổi rating; nó phản ánh việc các hãng và các kệ chứa những sản
+phẩm có thành phần dinh dưỡng khác nhau (ví dụ Kệ 2 tập trung ngũ cốc nhiều đường). Ngoài ra,
+mẫu không được chọn ngẫu nhiên (mục 1.1), nên kết luận chỉ áp dụng cho nhóm sản phẩm tương tự.
+
+\subsubsection{Kết luận}
+
+Với mức ý nghĩa 5\%, có đủ bằng chứng thống kê để kết luận rằng điểm đánh giá trung bình của
+ngũ cốc \textbf{khác nhau giữa các nhà sản xuất} và \textbf{khác nhau giữa các vị trí kệ}; kết
+luận này thống nhất qua cả ANOVA cổ điển, Welch's ANOVA và Kruskal-Wallis, kể cả sau khi hiệu
+chỉnh cho nhiều kiểm định. Theo nhà sản xuất, khác biệt đến từ Nabisco, hãng có rating cao hơn
+rõ rệt so với General Mills và Kelloggs (các hãng còn lại tương đương nhau). Theo vị trí kệ,
+Kệ 2 (Vừa) có rating thấp hơn có ý nghĩa so với cả Kệ 1 và Kệ 3, đồng thời cũng là kệ có lượng
+đường cao hơn có ý nghĩa. Mức độ liên hệ của yếu tố hãng ($\eta^2 = 36{,}2\%$) lớn hơn yếu tố kệ
+($\eta^2 = 13{,}4\%$).
+
+Tuy vậy, ANOVA chỉ cho biết \emph{nhóm nào} có rating cao hay thấp, và kết quả về đường cho
+thấy khác biệt giữa các nhóm thực chất là khác biệt về thành phần dinh dưỡng. Câu hỏi tiếp theo
+là: \emph{mỗi thành phần dinh dưỡng cụ thể (đường, chất xơ, chất đạm\ldots) liên hệ với rating
+như thế nào khi xét đồng thời}. Câu hỏi này được trả lời bằng mô hình hồi quy tuyến tính bội ở
+Mục 6.4.
 
 % =====================================================================
 \begin{thebibliography}{9}

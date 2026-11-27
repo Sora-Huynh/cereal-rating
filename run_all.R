@@ -9,7 +9,8 @@ if (!file.exists("src/config.R")) stop("Hãy chạy từ thư mục gốc dự �
 steps <- c(
   "analysis/01_preprocess.R",       # Phần 4
   "analysis/02_descriptive_stats.R",  # Mục 5.1, Bảng 4 – 7
-  "analysis/03_descriptive_plots.R"   # Mục 5.2, Hình 1 – 4
+  "analysis/03_descriptive_plots.R",  # Mục 5.2, Hình 1 – 4
+  "analysis/04_anova.R"               # Mục 6.3, ANOVA theo mfr và shelf
 )
 
 for (step in steps) {

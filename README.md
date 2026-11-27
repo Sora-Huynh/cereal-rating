@@ -89,6 +89,7 @@ Toàn bộ mất khoảng 20 giây. Có thể chạy riêng từng bước:
 | 1 | `Rscript analysis/01_preprocess.R` | Tiền xử lý số liệu | Phần 4 | `data/processed/cereal_cleaned.csv`, `.rds` |
 | 2 | `Rscript analysis/02_descriptive_stats.R` | Bảng 4 – 7; đường theo kệ; Pearson / Spearman | Mục 5.1, Bảng 7 – 9 | `results/tables/bang_*.csv` |
 | 3 | `Rscript analysis/03_descriptive_plots.R` | Hình 1 – 4, ma trận tương quan | Mục 5.2 | `results/figures/Hinh_*.png` |
+| 4 | `Rscript analysis/04_anova.R` | Shapiro-Wilk, Levene, ANOVA, Welch, Kruskal-Wallis, Tukey HSD, Dunn cho rating và sugars theo `mfr`, `shelf` | Mục 6.3 | `results/tables/anova_*.csv`, `results/figures/Hinh_6_3_Tukey_HSD.png` |
 
 Bước 2 và 3 đọc dữ liệu sạch do bước 1 lưu, nên phải chạy bước 1 trước; bước 2 và 3 không phụ thuộc
 nhau. Mỗi bước tự nạp thư viện và hàm cần dùng, nên mở riêng một file trong `analysis/` rồi bấm
@@ -191,11 +192,13 @@ BTL/
 │   ├── config.R                 # thư viện, đường dẫn, danh sách biến, hằng số
 │   ├── preprocess.R             # Phần 4: mỗi hàm ứng với một mục 4.1 – 4.5
 │   ├── descriptive.R            # Mục 5.1: tần số, đặc trưng mẫu, ngoại lai Tukey, theo nhóm
-│   └── plots.R                  # Mục 5.2: hàm vẽ Hình 1 – 4
+│   ├── plots.R                  # Mục 5.2: hàm vẽ Hình 1 – 4
+│   └── inference.R              # Mục 6.3: Levene, ANOVA, Tukey, Dunn
 ├── analysis/                    # các bước chạy, trao đổi với nhau qua file
 │   ├── 01_preprocess.R          # bước 1
 │   ├── 02_descriptive_stats.R   # bước 2
-│   └── 03_descriptive_plots.R   # bước 3
+│   ├── 03_descriptive_plots.R   # bước 3
+│   └── 04_anova.R               # bước 4 (Mục 6.3)
 ├── tests/
 │   └── test_preprocess.R        # kiểm tra dữ liệu sau tiền xử lý
 ├── results/                     # sinh tự động
@@ -219,7 +222,6 @@ Theo mục tiêu ở Phần 2.2 của báo cáo, các bước tiếp theo dự k
 
 | Bước | File dự kiến | Nội dung |
 |---|---|---|
-| 4 | `analysis/04_compare_groups.R` | Shapiro-Wilk và Levene theo nhóm; ANOVA + Tukey HSD, hoặc Kruskal-Wallis + Dunn, cho `rating` theo `mfr` và `shelf` |
 | 5 | `analysis/05_correlation.R` | Kiểm định ý nghĩa hệ số Pearson / Spearman; VIF |
 | 6 | `analysis/06_regression.R` | Hồi quy OLS; kiểm định t, F, R²; chẩn đoán phần dư (Breusch-Pagan, Shapiro-Wilk, Durbin-Watson, Cook) |
 
